@@ -3,371 +3,416 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vornik</title>
-  <meta name="description" content="Vornik is a local-first orchestration daemon for teams of AI agents.">
+  <title>Vornik — agent swarms on your own metal</title>
+  <meta name="description" content="Vornik is an asynchronous, local-first orchestration daemon for AI agent swarms. Self-hosted, zero-egress agents, persistent project memory. Install it by handing one prompt to your coding agent.">
+  <meta property="og:title" content="Vornik — agent swarms on your own metal">
+  <meta property="og:description" content="An asynchronous, local-first orchestration daemon for AI agent swarms. The install is AI-first: hand one prompt to your coding agent.">
+  <meta property="og:url" content="https://vornik.io">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
-      --ink: #151515;
-      --muted: #595959;
-      --line: #d9d5cc;
-      --panel: #f7f4ec;
-      --panel-strong: #ebe2d0;
-      --accent: #185a53;
-      --accent-strong: #113f3a;
-      --code: #101315;
-      --code-text: #f8f3e7;
-      --paper: #fffdfa;
+      color-scheme: dark;
+      --bg: #0f1622;
+      --panel: #182232;
+      --panel-deep: #121a28;
+      --line: #26334a;
+      --ink: #e9eef6;
+      --muted: #93a1b5;
+      --amber: #ffb454;
+      --ok: #6ee7a0;
+      --display: "Clash Display", "IBM Plex Sans", sans-serif;
+      --body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      background: var(--bg);
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(21, 21, 21, 0.045) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(21, 21, 21, 0.035) 1px, transparent 1px),
-        var(--paper);
-      background-size: 44px 44px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.5;
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
     }
 
-    a {
-      color: inherit;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.18em;
+    a { color: var(--amber); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+      border-radius: 2px;
     }
 
-    .shell {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-    }
+    .shell { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }
 
+    /* ---------- nav ---------- */
     header {
       border-bottom: 1px solid var(--line);
-      background: rgba(255, 253, 250, 0.88);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 2;
+      position: sticky; top: 0; z-index: 3;
+      background: rgba(15, 22, 34, 0.9);
+      backdrop-filter: blur(10px);
     }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      min-height: 64px;
-    }
-
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
     .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--ink);
-      font-weight: 750;
-      text-decoration: none;
+      font-family: var(--display); font-weight: 600; font-size: 1.25rem;
+      color: var(--ink); letter-spacing: 0.01em;
+      display: flex; align-items: center; gap: 10px;
     }
-
-    .mark {
-      display: grid;
-      place-items: center;
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--ink);
-      background: var(--accent);
-      color: #fffdfa;
-      font-size: 15px;
-      line-height: 1;
+    .brand .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--ok); box-shadow: 0 0 8px rgba(110, 231, 160, 0.7);
     }
+    .nav-links { display: flex; gap: 26px; font-size: 0.95rem; flex-wrap: wrap; }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--ink); text-decoration: none; }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    main {
-      padding: 88px 0 72px;
-    }
-
+    /* ---------- hero ---------- */
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
-      gap: 48px;
-      align-items: center;
+      display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      gap: 56px; align-items: start;
+      padding: 76px 0 72px;
     }
-
     .eyebrow {
-      margin: 0 0 14px;
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 760;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin: 0;
     }
-
     h1 {
-      margin: 0;
-      max-width: 760px;
-      font-size: clamp(44px, 8vw, 92px);
-      line-height: 0.94;
-      letter-spacing: 0;
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(2.5rem, 5.4vw, 3.9rem);
+      line-height: 1.04; letter-spacing: -0.015em;
+      margin: 14px 0 18px;
     }
+    h1 .amber { color: var(--amber); }
+    .lede { color: var(--muted); font-size: 1.08rem; max-width: 34em; margin: 0 0 34px; }
+    .lede strong { color: var(--ink); font-weight: 500; }
 
-    .lede {
-      max-width: 690px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: clamp(18px, 2vw, 22px);
+    /* install lanes */
+    .lane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .lane + .lane { margin-top: 14px; }
+    .lane-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 16px; font-family: var(--mono); font-size: 0.78rem;
+      color: var(--muted); border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
     }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
+    .lane-primary { border-color: rgba(255, 180, 84, 0.45); }
+    .lane-primary .lane-head { color: var(--amber); }
+    .lane-body { padding: 16px; background: var(--panel); }
+    .prompt-text {
+      font-family: var(--mono); font-size: 0.92rem; line-height: 1.6;
+      margin: 0; color: var(--ink); word-break: break-word;
     }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 1px solid var(--ink);
-      border-radius: 8px;
-      background: var(--ink);
-      color: #fffdfa;
-      font-weight: 700;
-      text-decoration: none;
+    .prompt-text .url { color: var(--amber); }
+    .lane-note { margin: 12px 0 0; font-size: 0.85rem; color: var(--muted); }
+    .lane-note code { font-family: var(--mono); font-size: 0.9em; }
+    .shell-line {
+      font-family: var(--mono); font-size: 0.92rem; margin: 0; color: var(--ink);
+      word-break: break-word;
     }
-
-    .button.secondary {
-      background: var(--paper);
-      color: var(--ink);
+    .copy-btn {
+      font-family: var(--mono); font-size: 0.75rem;
+      color: var(--ink); background: transparent;
+      border: 1px solid var(--line); border-radius: 6px;
+      padding: 4px 12px; cursor: pointer; flex-shrink: 0;
     }
+    .copy-btn:hover { border-color: var(--amber); color: var(--amber); }
 
-    .install {
-      border: 1px solid var(--ink);
-      border-radius: 8px;
-      background: var(--code);
-      color: var(--code-text);
-      box-shadow: 12px 12px 0 var(--panel-strong);
+    .hero-links { margin-top: 26px; font-size: 0.95rem; display: flex; gap: 24px; flex-wrap: wrap; }
+
+    /* ---------- transcript (signature) ---------- */
+    .transcript {
+      border: 1px solid var(--line); border-radius: 12px;
+      background: var(--panel-deep);
+      font-family: var(--mono); font-size: 0.86rem; line-height: 1.75;
       overflow: hidden;
+      box-shadow: 0 24px 60px rgba(4, 8, 15, 0.5);
+    }
+    .transcript-head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 18px; border-bottom: 1px solid var(--line);
+      color: var(--muted); font-size: 0.78rem;
+    }
+    .transcript-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+    .transcript-body { padding: 18px 20px 22px; }
+    .transcript-body p { margin: 0 0 4px; white-space: pre-wrap; word-break: break-word; }
+    .t-user  { color: var(--amber); }
+    .t-cmd   { color: var(--ink); }
+    .t-out   { color: var(--muted); }
+    .t-ok    { color: var(--ok); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .transcript-body p { opacity: 0; animation: t-in 0.4s ease-out forwards; }
+      .transcript-body p:nth-child(1)  { animation-delay: 0.3s; }
+      .transcript-body p:nth-child(2)  { animation-delay: 1.0s; }
+      .transcript-body p:nth-child(3)  { animation-delay: 1.9s; }
+      .transcript-body p:nth-child(4)  { animation-delay: 2.5s; }
+      .transcript-body p:nth-child(5)  { animation-delay: 3.1s; }
+      .transcript-body p:nth-child(6)  { animation-delay: 3.7s; }
+      .transcript-body p:nth-child(7)  { animation-delay: 4.5s; }
+      .transcript-body p:nth-child(8)  { animation-delay: 5.1s; }
+      .transcript-body p:nth-child(9)  { animation-delay: 5.9s; }
+      .transcript-body p:nth-child(10) { animation-delay: 6.5s; }
+      @keyframes t-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
     }
 
-    .install-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 13px 16px;
-      border-bottom: 1px solid rgba(255, 253, 250, 0.18);
-      color: #d9d5cc;
-      font-size: 13px;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      white-space: nowrap;
-    }
-
-    .status::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #51d08a;
-    }
-
-    pre {
-      margin: 0;
-      padding: 22px 18px 24px;
-      overflow-x: auto;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    code {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    }
-
-    .docs {
-      margin-top: 92px;
-      padding-top: 34px;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 22px;
-    }
-
+    /* ---------- sections ---------- */
+    section { padding: 64px 0; border-top: 1px solid var(--line); }
     h2 {
-      margin: 0;
-      font-size: clamp(26px, 4vw, 42px);
-      line-height: 1.05;
-      letter-spacing: 0;
+      font-family: var(--display); font-weight: 500;
+      font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -0.01em;
+      margin: 6px 0 30px;
     }
+    .defn {
+      font-family: var(--display); font-weight: 500;
+      font-size: clamp(1.25rem, 2.4vw, 1.7rem); line-height: 1.35;
+      max-width: 30em; margin: 0;
+    }
+    .defn .quiet { color: var(--muted); }
 
-    .section-head p {
-      margin: 0;
-      max-width: 440px;
-      color: var(--muted);
+    .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .cap {
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel-deep); padding: 22px 22px 24px;
     }
+    .cap h3 { font-family: var(--body); font-weight: 600; font-size: 1rem; margin: 0 0 8px; }
+    .cap p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+    .cap code { font-family: var(--mono); font-size: 0.85em; color: var(--ink); }
 
-    .link-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+    .topo {
+      font-family: var(--mono); font-size: 0.8rem; line-height: 1.6;
+      color: var(--muted); background: var(--panel-deep);
+      border: 1px solid var(--line); border-radius: 10px;
+      padding: 22px 26px; overflow-x: auto; margin: 0;
     }
+    .topo b { color: var(--ink); font-weight: 500; }
+    .topo .a { color: var(--amber); }
 
-    .doc-link {
-      min-height: 148px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 253, 250, 0.92);
-      text-decoration: none;
+    .editions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .edition {
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel-deep); padding: 24px;
     }
-
-    .doc-link strong {
-      display: block;
-      margin-bottom: 9px;
-      color: var(--accent-strong);
-      font-size: 18px;
-    }
-
-    .doc-link span {
-      color: var(--muted);
-      font-size: 15px;
-    }
+    .edition h3 { font-family: var(--display); font-weight: 500; font-size: 1.2rem; margin: 0 0 6px; }
+    .edition .tag { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+    .edition p { color: var(--muted); font-size: 0.93rem; margin: 12px 0 16px; }
 
     footer {
-      padding: 28px 0 38px;
       border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 14px;
+      padding: 30px 0 44px; color: var(--muted); font-size: 0.85rem;
     }
+    .foot-row { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--ink); }
+    .foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
 
-    @media (max-width: 820px) {
-      main {
-        padding-top: 56px;
-      }
-
-      nav {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 14px 0;
-      }
-
-      .nav-links {
-        flex-wrap: wrap;
-        gap: 12px 18px;
-      }
-
-      .hero,
-      .link-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .install {
-        box-shadow: 7px 7px 0 var(--panel-strong);
-      }
-
-      .section-head {
-        display: block;
-      }
-
-      .section-head p {
-        margin-top: 10px;
-      }
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 56px; }
+      .cap-grid, .editions { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <header>
-    <nav class="shell" aria-label="Main navigation">
-      <a class="brand" href="/">
-        <span class="mark" aria-hidden="true">V</span>
-        <span>Vornik</span>
-      </a>
-      <div class="nav-links">
-        <a href="https://docs.vornik.io/">Docs</a>
-        <a href="https://github.com/grinco/vornik">Community Edition</a>
-        <a href="https://docs.vornik.io/getting-started/">Quickstart</a>
-      </div>
+    <nav class="shell" aria-label="Main">
+      <span class="brand"><span class="dot" aria-hidden="true"></span>vornik</span>
+      <span class="nav-links">
+        <a href="https://docs.vornik.io/getting-started/">Getting started</a>
+        <a href="https://docs.vornik.io">Docs</a>
+        <a href="https://github.com/grinco/vornik">GitHub</a>
+        <a href="https://docs.vornik.io/editions/">Enterprise</a>
+      </span>
     </nav>
   </header>
 
-  <main class="shell">
-    <section class="hero" aria-labelledby="hero-title">
+  <main>
+    <div class="shell hero">
       <div>
-        <p class="eyebrow">Local-first agent orchestration</p>
-        <h1 id="hero-title">Vornik</h1>
+        <p class="eyebrow">Open core · AGPL-3.0 · runs on your hardware</p>
+        <h1 id="hero-title">Agent swarms on <span class="amber">your own metal</span>.</h1>
         <p class="lede">
-          Run teams of AI agents asynchronously on your own infrastructure, with isolated
-          containers, durable task queues, auditable results, and zero direct agent egress by default.
+          Vornik is an asynchronous, local-first orchestration daemon. Define
+          projects, submit tasks, and isolated agents work through them while
+          you're away — <strong>your hardware, your models, your data</strong>.
+          No cloud sign-up.
         </p>
-        <div class="actions">
-          <a class="button" href="https://docs.vornik.io/getting-started/">Read the docs</a>
-          <a class="button secondary" href="https://github.com/grinco/vornik">View CE on GitHub</a>
+
+        <div class="lane lane-primary">
+          <div class="lane-head">
+            <span>recommended — hand it to your coding agent</span>
+            <button class="copy-btn" data-copy="agent-prompt" aria-label="Copy the agent install prompt">copy</button>
+          </div>
+          <div class="lane-body">
+            <p class="prompt-text" id="agent-prompt">Set up Vornik for me. Follow the runbook at <span class="url">https://raw.githubusercontent.com/grinco/vornik/main/AGENTS.md</span></p>
+            <p class="lane-note">
+              Paste into Claude Code, Codex, Gemini CLI, or any coding agent
+              with shell access. <a href="https://github.com/grinco/vornik/blob/main/AGENTS.md">AGENTS.md</a>
+              is a runbook it can execute and verify — install, LLM key, first
+              task, and its own persistent memory on your Vornik. It asks you
+              before anything privileged.
+            </p>
+          </div>
         </div>
+
+        <div class="lane">
+          <div class="lane-head">
+            <span>or run the installer yourself</span>
+            <button class="copy-btn" data-copy="shell-line" aria-label="Copy the shell install command">copy</button>
+          </div>
+          <div class="lane-body">
+            <p class="shell-line" id="shell-line">curl -fsSL https://get.vornik.io | bash</p>
+            <p class="lane-note">
+              Linux with rootless Podman. Builds the daemon, starts
+              PostgreSQL + pgvector, and installs a user service — then a
+              first-run guide at <code>/ui/setup</code> connects your LLM.
+            </p>
+          </div>
+        </div>
+
+        <p class="hero-links">
+          <a href="https://docs.vornik.io/getting-started/">Read the getting-started guide</a>
+          <a href="https://github.com/grinco/vornik">Star it on GitHub</a>
+        </p>
       </div>
 
-      <aside class="install" aria-label="Install Vornik Community Edition">
-        <div class="install-head">
-          <span>Install Vornik CE</span>
-          <span class="status">get.vornik.io</span>
+      <div class="transcript" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
+        <div class="transcript-head"><span class="dot" aria-hidden="true"></span>your agent · setting up vornik</div>
+        <div class="transcript-body" aria-hidden="true">
+          <p class="t-user">&gt; Set up Vornik for me — follow AGENTS.md.</p>
+          <p class="t-cmd">$ curl -fsSL https://get.vornik.io | bash</p>
+          <p class="t-ok">  ok  Vornik is up and ready.</p>
+          <p class="t-cmd">$ curl -s localhost:8080/readyz</p>
+          <p class="t-out">  {"status":"ready"}</p>
+          <p class="t-cmd">$ vornikctl task submit -p assistant --prompt "Say hello"</p>
+          <p class="t-ok">  ok  task COMPLETED — the agent answered</p>
+          <p class="t-cmd">$ recall "smoke canary"</p>
+          <p class="t-ok">  ok  memory round-trip verified</p>
+          <p class="t-user">&gt; Done. I'll remember this install.</p>
         </div>
-        <pre><code>curl -fsSL https://get.vornik.io | bash</code></pre>
-      </aside>
+      </div>
+    </div>
+
+    <section>
+      <div class="shell">
+        <p class="defn">
+          You submit work and walk away. Vornik queues it, runs each agent in
+          its own container, and persists every result —
+          <span class="quiet">so the swarm keeps working when your editor is closed.</span>
+        </p>
+      </div>
     </section>
 
-    <section class="docs" aria-labelledby="docs-title">
-      <div class="section-head">
-        <h2 id="docs-title">Documentation</h2>
-        <p>Start with the Community Edition quickstart, then move into configuration, CLI reference, and troubleshooting.</p>
+    <section aria-labelledby="caps-title">
+      <div class="shell">
+        <p class="eyebrow">What you get</p>
+        <h2 id="caps-title">Built for data-sensitive, self-hosted work</h2>
+        <div class="cap-grid">
+          <div class="cap">
+            <h3>Local-first</h3>
+            <p>The daemon and every agent container run on one host you
+            control. Works with self-hosted open-weight models or any
+            OpenAI-compatible cloud endpoint.</p>
+          </div>
+          <div class="cap">
+            <h3>Zero-egress agents</h3>
+            <p>Each task's agent runs in an isolated Podman container with
+            no network by default. The daemon makes the outbound model
+            calls; agents never touch the network.</p>
+          </div>
+          <div class="cap">
+            <h3>Persistent project memory</h3>
+            <p>pgvector-backed RAG per project. Swarm agents recall prior
+            work — and your coding agent gets <code>remember</code> /
+            <code>recall</code> across sessions via the companion plugin.</p>
+          </div>
+          <div class="cap">
+            <h3>Swarms &amp; workflows</h3>
+            <p>Roles, step graphs, gates, retries, delegation — plus
+            autonomous task creation with approval gates when you want the
+            swarm proposing its own work.</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="link-grid">
-        <a class="doc-link" href="https://docs.vornik.io/getting-started/">
-          <strong>Getting started</strong>
-          <span>Install the daemon, create a project, and run the first task.</span>
-        </a>
-        <a class="doc-link" href="https://docs.vornik.io/configuration/">
-          <strong>Configuration</strong>
-          <span>Set providers, runtimes, project paths, budgets, and storage.</span>
-        </a>
-        <a class="doc-link" href="https://docs.vornik.io/reference/vornikctl/">
-          <strong>CLI reference</strong>
-          <span>Generated reference for every vornikctl command and flag.</span>
-        </a>
-        <a class="doc-link" href="https://docs.vornik.io/troubleshooting/">
-          <strong>Troubleshooting</strong>
-          <span>Diagnose startup, runtime, container, and task execution issues.</span>
-        </a>
+    <section aria-labelledby="topo-title">
+      <div class="shell">
+        <p class="eyebrow">How it runs</p>
+        <h2 id="topo-title">One host, clean seams</h2>
+<pre class="topo" aria-label="Runtime topology: the vornik daemon runs as a user service on the host, PostgreSQL with pgvector runs in a container, and agent containers are spawned per task as siblings.">
+HOST <span class="a">(your user, rootless podman)</span>
+┌──────────────────────────────────────────────┐
+│  <b>vornik daemon</b> — systemctl --user service    │
+│    ├── UI + API on :8080                     │
+│    ├── makes the outbound LLM calls          │
+│    └── spawns agents as sibling containers   │
+│         ├── <b>vornik-postgres</b> (pgvector)      │
+│         ├── agent container · task 1         │
+│         └── agent container · task N         │
+└──────────────────────────────────────────────┘
+</pre>
+      </div>
+    </section>
+
+    <section aria-labelledby="editions-title">
+      <div class="shell">
+        <p class="eyebrow">Editions</p>
+        <h2 id="editions-title">Complete core, open by default</h2>
+        <div class="editions">
+          <div class="edition">
+            <h3>Community</h3>
+            <span class="tag">AGPL-3.0 · github.com/grinco/vornik</span>
+            <p>The complete orchestration core — daemon, agents, memory/RAG,
+            workflows, Web UI, CLI, companion plugin. Fully usable on its own
+            for personal and small-team work.</p>
+            <a href="https://github.com/grinco/vornik">Source on GitHub</a>
+          </div>
+          <div class="edition">
+            <h3>Enterprise</h3>
+            <span class="tag">proprietary · same core</span>
+            <p>Advanced capabilities on top of the Community core for
+            organizations — packaged, supported, and built on the same
+            daemon you can read the source of.</p>
+            <a href="https://docs.vornik.io/editions/">Feature matrix</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell">
-      <span>Vornik Community Edition is available at </span>
-      <a href="https://github.com/grinco/vornik">github.com/grinco/vornik</a>.
+    <div class="shell foot-row">
+      <span>Vornik — © EaseIT.cz s.r.o.</span>
+      <span class="foot-links">
+        <a href="https://docs.vornik.io">Docs</a>
+        <a href="https://github.com/grinco/vornik/blob/main/AGENTS.md">AGENTS.md</a>
+        <a href="https://github.com/grinco/vornik">GitHub</a>
+        <a href="https://get.vornik.io">get.vornik.io</a>
+      </span>
     </div>
   </footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.copy);
+        var text = el.textContent.trim();
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = 'copied';
+          setTimeout(function () { btn.textContent = 'copy'; }, 1600);
+        }, function () {
+          var r = document.createRange();
+          r.selectNodeContents(el);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(r);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
