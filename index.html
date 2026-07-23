@@ -209,6 +209,17 @@
       padding: 4px 12px; cursor: pointer; flex-shrink: 0;
     }
     .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .install-select {
+      font-family: var(--mono); font-size: 0.78rem;
+      color: var(--accent); background: transparent;
+      border: 1px solid var(--line); border-radius: 6px;
+      padding: 4px 10px; cursor: pointer; max-width: 100%;
+    }
+    .install-select:hover { border-color: var(--accent); }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
 
     .hero-links { margin-top: 26px; font-size: 0.95rem; display: flex; gap: 24px; flex-wrap: wrap; }
 
@@ -340,34 +351,22 @@
 
         <div class="lane lane-primary">
           <div class="lane-head">
-            <span>recommended — hand it to your coding agent</span>
-            <button class="copy-btn" data-copy="agent-prompt" aria-label="Copy the agent install prompt">copy</button>
+            <label for="install-mode" class="sr-only">Choose how to install Vornik</label>
+            <select id="install-mode" class="install-select" aria-label="Choose how to install Vornik">
+              <option value="agent" selected>recommended — hand it to your coding agent</option>
+              <option value="linux">Linux installer</option>
+              <option value="mac">macOS installer</option>
+            </select>
+            <button class="copy-btn" data-copy="install-cmd" aria-label="Copy the selected install command">copy</button>
           </div>
           <div class="lane-body">
-            <p class="prompt-text" id="agent-prompt">Set up Vornik for me. Follow the runbook at <span class="url">https://raw.githubusercontent.com/grinco/vornik/main/AGENTS.md</span></p>
-            <p class="lane-note">
+            <p class="prompt-text" id="install-cmd">Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
+            <p class="lane-note" id="install-note">
               Paste into Claude Code, Codex, Gemini CLI, or any coding agent
-              with shell access. <a href="https://github.com/grinco/vornik/blob/main/AGENTS.md">AGENTS.md</a>
+              with shell access. <a href="https://agents.vornik.io">AGENTS.md</a>
               is a runbook it can execute and verify — install, LLM key, first
               task, and its own persistent memory on your Vornik. It asks you
               before anything privileged.
-            </p>
-          </div>
-        </div>
-
-        <div class="lane">
-          <div class="lane-head">
-            <span>or run the installer yourself</span>
-            <button class="copy-btn" data-copy="shell-line" aria-label="Copy the shell install command">copy</button>
-          </div>
-          <div class="lane-body">
-            <p class="shell-line" id="shell-line">curl -fsSL https://get.vornik.io | bash</p>
-            <p class="lane-note">
-              Linux with rootless Podman. Builds the daemon, starts
-              PostgreSQL + pgvector, and installs a user service — then a
-              first-run guide at <code>/ui/setup</code> connects your LLM.
-              Pins a release tag, not <code>main</code>. Prefer to check the
-              script first? <a href="https://docs.vornik.io/getting-started/">Verify its checksum</a>.
             </p>
           </div>
         </div>
@@ -536,6 +535,39 @@ HOST <span class="a">(your user, rootless podman)</span>
         });
       });
     });
+
+    // Install-method select: one copy/paste window, swap content by mode.
+    // Linux and macOS run the SAME command — get.vornik.io detects the OS
+    // in-script (macOS provisions a Lima Linux VM to preserve zero-egress).
+    (function () {
+      var sel = document.getElementById('install-mode');
+      var cmd = document.getElementById('install-cmd');
+      var note = document.getElementById('install-note');
+      if (!sel || !cmd || !note) return;
+      var MODES = {
+        agent: {
+          cls: 'prompt-text',
+          html: 'Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span>',
+          note: 'Paste into Claude Code, Codex, Gemini CLI, or any coding agent with shell access. <a href="https://agents.vornik.io">AGENTS.md</a> is a runbook it can execute and verify — install, LLM key, first task, and its own persistent memory on your Vornik. It asks you before anything privileged.'
+        },
+        linux: {
+          cls: 'shell-line',
+          html: 'curl -fsSL https://get.vornik.io | bash',
+          note: 'Linux with rootless Podman. Builds the daemon, starts PostgreSQL + pgvector, and installs a user service — then a first-run guide at <code>/ui/setup</code> connects your LLM. Pins a release tag, not <code>main</code>. Prefer to check the script first? <a href="https://docs.vornik.io/getting-started/">Verify its checksum</a>.'
+        },
+        mac: {
+          cls: 'shell-line',
+          html: 'curl -fsSL https://get.vornik.io | bash',
+          note: 'macOS — the <strong>same command</strong>; the script detects your OS. It provisions a small Linux VM (<a href="https://lima-vm.io">Lima</a>) and runs the stack inside it, so zero-egress agent isolation is preserved exactly as on Linux. <a href="https://docs.vornik.io/getting-started/#macos-inside-a-linux-vm">macOS details</a>.'
+        }
+      };
+      sel.addEventListener('change', function () {
+        var m = MODES[sel.value] || MODES.agent;
+        cmd.className = m.cls;
+        cmd.innerHTML = m.html;
+        note.innerHTML = m.note;
+      });
+    })();
   </script>
 </body>
 </html>
