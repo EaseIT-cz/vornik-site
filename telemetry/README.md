@@ -26,19 +26,47 @@ Node 20 or newer:
 node --test telemetry/worker.test.mjs
 ```
 
-## Manual Cloudflare setup
+## Deploy the Worker
 
-No Page Rule is required, and this repository does not use the Cloudflare API.
+No Page Rule is required. There is no CI workflow or stored Cloudflare
+credential in this repository. The optional Wrangler path uses your
+interactive Cloudflare login to deploy the preview Worker; the dashboard path
+does not require you to run a CLI.
 
-1. In **Workers & Pages**, create a Worker named `vornik-telemetry-mock`.
-2. Paste `telemetry/worker.js` into the module editor and deploy it.
-3. Under the Worker's **Settings → Domains & Routes**, add a route:
+The Cloudflare Pages/static uploader cannot deploy this directory because it
+contains Worker JavaScript. Use either:
+
+### Dashboard editor (no CLI)
+
+1. In **Workers & Pages**, choose **Create → Worker → Start with Hello World**.
+   Do not choose Pages, static asset upload, or repository asset upload.
+2. Name it `vornik-telemetry-mock`, deploy the placeholder, then choose
+   **Edit code**.
+3. Replace the placeholder module with `telemetry/worker.js` and deploy.
+
+### Wrangler
+
+```bash
+cd telemetry
+npm install
+npx wrangler login
+WRANGLER_SEND_METRICS=false npm run deploy
+```
+
+`wrangler.jsonc` deliberately publishes only to the Worker's `workers.dev`
+preview URL. It does not create or change a production route.
+`WRANGLER_SEND_METRICS=false` disables Wrangler's own CLI usage telemetry for
+this deployment.
+
+## Add the production route manually
+
+1. Under the Worker's **Settings → Domains & Routes**, add a route:
    - Zone: `vornik.io`
    - Route: `telemetry.vornik.io/v1/collect.json*`
-4. Confirm the existing `telemetry` DNS record is proxied through Cloudflare.
-5. Keep Worker observability/log collection disabled. Do not add Logpush,
+2. Confirm the existing `telemetry` DNS record is proxied through Cloudflare.
+3. Confirm **Observability** is disabled. Do not add Logpush,
    request-body logging, cookies, or visitor identifiers.
-6. Test:
+4. Test:
 
 ```bash
 curl -i -X POST \
