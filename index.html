@@ -8,25 +8,27 @@
   <meta property="og:title" content="Vornik — agent swarms on your own metal">
   <meta property="og:description" content="An asynchronous, local-first orchestration daemon for AI agent swarms. The install is AI-first: hand one prompt to your coding agent.">
   <meta property="og:url" content="https://vornik.io">
+  <meta property="og:image" content="https://vornik.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Vornik — agent swarms on your own metal">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <!-- Both schemes are supported; theme-color tracks the active one so the
        mobile address bar matches the page (brand-500 per theme). -->
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F1EC">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#3B4252">
-  <link rel="preconnect" href="https://api.fontshare.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F6F4EF">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#10141A">
+  <!-- Brand Manual v1.2: self-hosted Space Grotesk + Manrope, no third-party font requests. -->
+  <link rel="stylesheet" href="/brand-tokens.css">
   <style>
     /* ============================================================
-       Vornik brand palette — mirrors the app's theme tokens
-       (internal/ui/templates/_partials.html).
-         light — Coolors: cadet-teal brand, forest accent, warm
-                 off-white surfaces, dark ink.
-         dark  — EaseIT blue on Nord-inspired cool-gray surfaces,
-                 lime success accent.
+       Vornik palette: EaseIT Labs Brand Manual v1.2 (October 2026).
+         light: Paper ground, navy ink, AA link blue (#1665AD; EaseIT
+                Blue #1C7ED6 is reserved for the mark and large type).
+         dark:  the manual's dark tokens: navy-black ground, light-blue
+                accent, green only for "live / ok" and the mark's dot.
        Scheme resolution is pure CSS so it works with JavaScript
        disabled: dark is the default (matching the app), an explicit
        OS light preference overrides it, and the header toggle can
@@ -34,20 +36,21 @@
        ============================================================ */
     :root {
       color-scheme: dark;
-      --bg: #3B4252;            /* surface-900 page */
-      --panel: #434C5E;         /* raised card */
-      --panel-deep: #2E3440;    /* inset (code, transcript) */
-      --line: #4C566A;          /* hairline border */
-      --ink: #F3F4F6;           /* primary text */
-      --muted: #A8B4C5;         /* secondary text */
-      --accent: #0078C3;        /* EaseIT blue — links, brand */
-      --accent-strong: #339FD7; /* hover / brighter brand */
-      --ok: #97C333;            /* lime — live / success */
-      --header-bg: rgba(46, 52, 64, 0.82);
+      --bg: #10141A;            /* manual dark ground */
+      --panel: #171C23;         /* raised card */
+      --panel-deep: #0B0E13;    /* inset (code, transcript) */
+      --line: #262C35;          /* hairline border */
+      --ink: #ECE9E1;           /* primary text */
+      --muted: #9AA2AC;         /* secondary text */
+      --accent: #4FA3E6;        /* EaseIT blue on dark: links */
+      --accent-strong: #6FB4EE; /* hover */
+      --ok: #8FCB5B;            /* signal green on dark: live / ok */
+      --mark-agent: #6FB4EE; --mark-outcome: #9BDB6B;
+      --header-bg: rgba(16, 20, 26, 0.82);
       --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-      --display: "Clash Display", "IBM Plex Sans", sans-serif;
-      --body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --display: var(--font-display);
+      --body: var(--font-body);
+      --mono: var(--font-mono);
     }
 
     /* Light tokens — applied when the OS prefers light and the visitor
@@ -59,40 +62,43 @@
     @media (prefers-color-scheme: light) {
       :root:not([data-theme]) {
         color-scheme: light;
-        --bg: #F5F1EC;
+        --bg: #F6F4EF;
         --panel: #FFFFFF;
-        --panel-deep: #FAF7F3;
-        --line: #E0D5C9;
-        --ink: #1B2026;
-        --muted: #5B6470;
-        --accent: #558A98;
-        --accent-strong: #427280;
-        --ok: #659157;
-        --header-bg: rgba(245, 241, 236, 0.82);
-        --shadow: 0 20px 50px rgba(27, 32, 38, 0.12);
+        --panel-deep: #FBFAF7;
+        --line: #E6E1D6;
+        --ink: #101826;
+        --muted: #5E6672;
+        --accent: #1665AD;
+        --accent-strong: #11528D;
+        --ok: #467A20;
+        --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
+        --header-bg: rgba(246, 244, 239, 0.82);
+        --shadow: 0 20px 50px rgba(16, 24, 38, 0.10);
       }
     }
     :root[data-theme="light"] {
       color-scheme: light;
-      --bg: #F5F1EC;
+      --bg: #F6F4EF;
       --panel: #FFFFFF;
-      --panel-deep: #FAF7F3;
-      --line: #E0D5C9;
-      --ink: #1B2026;
-      --muted: #5B6470;
-      --accent: #558A98;
-      --accent-strong: #427280;
-      --ok: #659157;
-      --header-bg: rgba(245, 241, 236, 0.82);
-      --shadow: 0 20px 50px rgba(27, 32, 38, 0.12);
+      --panel-deep: #FBFAF7;
+      --line: #E6E1D6;
+      --ink: #101826;
+      --muted: #5E6672;
+      --accent: #1665AD;
+      --accent-strong: #11528D;
+      --ok: #467A20;
+      --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
+      --header-bg: rgba(246, 244, 239, 0.82);
+      --shadow: 0 20px 50px rgba(16, 24, 38, 0.10);
     }
     /* Explicit dark pin re-asserts the defaults (so the toggle can return to
        dark even on a light-preference OS). */
     :root[data-theme="dark"] {
       color-scheme: dark;
-      --bg: #3B4252; --panel: #434C5E; --panel-deep: #2E3440; --line: #4C566A;
-      --ink: #F3F4F6; --muted: #A8B4C5; --accent: #0078C3; --accent-strong: #339FD7;
-      --ok: #97C333; --header-bg: rgba(46, 52, 64, 0.82);
+      --bg: #10141A; --panel: #171C23; --panel-deep: #0B0E13; --line: #262C35;
+      --ink: #ECE9E1; --muted: #9AA2AC; --accent: #4FA3E6; --accent-strong: #6FB4EE;
+      --ok: #8FCB5B; --mark-agent: #6FB4EE; --mark-outcome: #9BDB6B;
+      --header-bg: rgba(16, 20, 26, 0.82);
       --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
     }
 
@@ -126,13 +132,13 @@
     }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 16px; }
     .brand {
-      font-family: var(--display); font-weight: 600; font-size: 1.25rem;
-      color: var(--ink); letter-spacing: 0.01em;
+      font-family: var(--display); font-weight: 700; font-size: 1.25rem;
+      color: var(--ink); letter-spacing: -0.01em;
       display: flex; align-items: center; gap: 10px;
     }
-    .brand-mark {
-      width: 26px; height: 26px; border-radius: 7px; display: block;
-    }
+    .brand-mark { width: 28px; height: 28px; display: block; flex: none; }
+    .brand-mark .agent { fill: var(--mark-agent); }
+    .brand-mark .outcome { fill: var(--mark-outcome); }
     .nav-right { display: flex; align-items: center; gap: 22px; }
     .nav-links { display: flex; gap: 22px; font-size: 0.95rem; flex-wrap: wrap; }
     .nav-links a { color: var(--muted); }
@@ -319,8 +325,8 @@
   <header>
     <nav class="shell" aria-label="Main">
       <span class="brand">
-        <img class="brand-mark" src="/icon.svg" width="26" height="26" alt="" aria-hidden="true">
-        vornik
+        <svg class="brand-mark" viewBox="0 0 120 120" width="28" height="28" aria-hidden="true" focusable="false"><path d="M42 24H26V96H42M78 24H94V96H78" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle class="agent" cx="47" cy="45" r="10"/><circle class="agent" cx="73" cy="45" r="10"/><circle class="outcome" cx="60" cy="75" r="11"/></svg>
+        Vornik
       </span>
       <span class="nav-right">
         <span class="nav-links">
