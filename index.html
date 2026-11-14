@@ -279,6 +279,19 @@
     }
     .defn .quiet { color: var(--muted); }
 
+    /* ---------- hero use cases ---------- */
+    .hero-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    .usecases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .usecase {
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel-deep); padding: 16px 18px 18px;
+    }
+    .usecase h2 {
+      font-family: var(--body); font-weight: 600; font-size: 0.95rem;
+      margin: 0 0 6px; color: var(--accent);
+    }
+    .usecase p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+
     .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     .cap {
       border: 1px solid var(--line); border-radius: 10px;
@@ -319,6 +332,9 @@
       .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 56px; }
       .cap-grid, .editions { grid-template-columns: 1fr; }
     }
+    @media (max-width: 480px) {
+      .usecases { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -346,7 +362,7 @@
   <main>
     <div class="shell hero">
       <div>
-        <p class="eyebrow">Open core · AGPL-3.0 · boosts your agents with RAG, skills, workflows and more</p>
+        <p class="eyebrow">Boosts your agents with RAG, skills, workflows and more</p>
         <h1 id="hero-title">Agent swarms that <span class="accent">you own</span>.</h1>
         <p class="lede">
           Vornik is an asynchronous, local-first orchestration daemon. Define
@@ -383,6 +399,18 @@
         </p>
       </div>
 
+      <div class="hero-side">
+      <div class="usecases" aria-label="Use cases">
+        <div class="usecase">
+          <h2>Autonomous AI</h2>
+          <p>Hand Vornik a goal and teams of specialist agents (researcher, writer, critic) carry it out in isolated containers, on a schedule if you like, pausing only where you have asked for your approval.</p>
+        </div>
+        <div class="usecase">
+          <h2>Assisted Coding</h2>
+          <p>Connect Claude Code, Codex or Hermes and your coding agent gets persistent project memory, shared knowledge skills, and a team it can hand reviews, research and ingests to while it keeps working.</p>
+        </div>
+      </div>
+
       <div class="transcript" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
         <div class="transcript-head"><span class="dot" aria-hidden="true"></span>your agent · setting up vornik</div>
         <div class="transcript-body" aria-hidden="true">
@@ -397,6 +425,7 @@
           <p class="t-ok">  ok  memory round-trip verified</p>
           <p class="t-user">&gt; Done. I'll remember this install.</p>
         </div>
+      </div>
       </div>
     </div>
 
