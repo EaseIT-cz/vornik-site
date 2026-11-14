@@ -231,6 +231,7 @@
 
     /* ---------- transcript (signature) ---------- */
     .transcript {
+      max-width: 640px; margin: 0 0 48px;
       border: 1px solid var(--line); border-radius: 12px;
       background: var(--panel-deep);
       font-family: var(--mono); font-size: 0.86rem; line-height: 1.75;
@@ -262,6 +263,7 @@
       .transcript-body p:nth-child(8)  { animation-delay: 5.1s; }
       .transcript-body p:nth-child(9)  { animation-delay: 5.9s; }
       .transcript-body p:nth-child(10) { animation-delay: 6.5s; }
+      .transcript.pending .transcript-body p { animation-play-state: paused; }
       @keyframes t-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
     }
 
@@ -280,7 +282,6 @@
     .defn .quiet { color: var(--muted); }
 
     /* ---------- hero use cases ---------- */
-    .hero-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
     .usecases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .usecase {
       border: 1px solid var(--line); border-radius: 10px;
@@ -301,14 +302,6 @@
     .cap p { margin: 0; color: var(--muted); font-size: 0.93rem; }
     .cap code { font-family: var(--mono); font-size: 0.85em; color: var(--ink); }
 
-    .topo {
-      font-family: var(--mono); font-size: 0.8rem; line-height: 1.6;
-      color: var(--muted); background: var(--panel-deep);
-      border: 1px solid var(--line); border-radius: 10px;
-      padding: 22px 26px; overflow-x: auto; margin: 0;
-    }
-    .topo b { color: var(--ink); font-weight: 500; }
-    .topo .a { color: var(--accent); }
 
     .editions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .edition {
@@ -399,38 +392,35 @@
         </p>
       </div>
 
-      <div class="hero-side">
       <div class="usecases" aria-label="Use cases">
         <div class="usecase">
           <h2>Autonomous AI</h2>
-          <p>Hand Vornik a goal and teams of specialist agents (researcher, writer, critic) carry it out in isolated containers, on a schedule if you like, pausing only where you have asked for your approval.</p>
+          <p>Start work from a goal, a schedule, a signed webhook or a Forge event (a labelled issue, a pull request, a failing CI run), and teams of specialist agents carry it out in isolated containers as one stage of your wider pipeline, pausing only where you have asked for approval.</p>
         </div>
         <div class="usecase">
           <h2>Assisted Coding</h2>
           <p>Connect Claude Code, Codex or Hermes and your coding agent gets persistent project memory, shared knowledge skills, and a team it can hand reviews, research and ingests to while it keeps working.</p>
         </div>
       </div>
-
-      <div class="transcript" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
-        <div class="transcript-head"><span class="dot" aria-hidden="true"></span>your agent · setting up vornik</div>
-        <div class="transcript-body" aria-hidden="true">
-          <p class="t-user">&gt; Set up Vornik for me — follow AGENTS.md.</p>
-          <p class="t-cmd">$ curl -fsSL https://get.vornik.io | bash</p>
-          <p class="t-ok">  ok  Vornik is up and ready.</p>
-          <p class="t-cmd">$ curl -s localhost:8080/readyz</p>
-          <p class="t-out">  {"status":"ready"}</p>
-          <p class="t-cmd">$ vornikctl task submit -p assistant --prompt "Say hello"</p>
-          <p class="t-ok">  ok  task COMPLETED — the agent answered</p>
-          <p class="t-cmd">$ recall "smoke canary"</p>
-          <p class="t-ok">  ok  memory round-trip verified</p>
-          <p class="t-user">&gt; Done. I'll remember this install.</p>
-        </div>
-      </div>
-      </div>
     </div>
 
     <section>
       <div class="shell">
+        <div class="transcript pending" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
+          <div class="transcript-head"><span class="dot" aria-hidden="true"></span>your agent · setting up vornik</div>
+          <div class="transcript-body" aria-hidden="true">
+            <p class="t-user">&gt; Set up Vornik for me — follow AGENTS.md.</p>
+            <p class="t-cmd">$ curl -fsSL https://get.vornik.io | bash</p>
+            <p class="t-ok">  ok  Vornik is up and ready.</p>
+            <p class="t-cmd">$ curl -s localhost:8080/readyz</p>
+            <p class="t-out">  {"status":"ready"}</p>
+            <p class="t-cmd">$ vornikctl task submit -p assistant --prompt "Say hello"</p>
+            <p class="t-ok">  ok  task COMPLETED — the agent answered</p>
+            <p class="t-cmd">$ recall "smoke canary"</p>
+            <p class="t-ok">  ok  memory round-trip verified</p>
+            <p class="t-user">&gt; Done. I'll remember this install.</p>
+          </div>
+        </div>
         <p class="defn">
           You submit work and walk away. Vornik queues it, runs each agent in
           its own container, and persists every result —
@@ -469,25 +459,6 @@
             swarm proposing its own work.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="topo-title">
-      <div class="shell">
-        <p class="eyebrow">How it runs</p>
-        <h2 id="topo-title">One host, clean seams</h2>
-<pre class="topo" aria-label="Runtime topology: the vornik daemon runs as a user service on the host, PostgreSQL with pgvector runs in a container, and agent containers are spawned per task as siblings.">
-HOST <span class="a">(your user, rootless podman)</span>
-┌──────────────────────────────────────────────┐
-│  <b>vornik daemon</b> — systemctl --user service    │
-│    ├── UI + API on :8080                     │
-│    ├── makes the outbound LLM calls          │
-│    └── spawns agents as sibling containers   │
-│         ├── <b>vornik-postgres</b> (pgvector)      │
-│         ├── agent container · task 1         │
-│         └── agent container · task N         │
-└──────────────────────────────────────────────┘
-</pre>
       </div>
     </section>
 
@@ -602,6 +573,17 @@ HOST <span class="a">(your user, rootless podman)</span>
         cmd.innerHTML = m.html;
         note.innerHTML = m.note;
       });
+    })();
+    (function () {
+      var t = document.querySelector('.transcript.pending');
+      if (!t) return;
+      if (!('IntersectionObserver' in window)) { t.classList.remove('pending'); return; }
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) {
+          t.classList.remove('pending'); io.disconnect();
+        }
+      }, { threshold: 0.35 });
+      io.observe(t);
     })();
   </script>
 </body>
