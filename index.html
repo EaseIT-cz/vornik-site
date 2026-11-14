@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vornik — agent swarms that you own</title>
-  <meta name="description" content="Vornik is an asynchronous, local-first orchestration daemon for AI agent swarms. Self-hosted, zero-egress agents, persistent project memory. Install it by handing one prompt to your coding agent.">
+  <meta name="description" content="Vornik runs AI agent teams on your own machine. Use it for autonomous work that runs while you're away, or to give your coding agent memory, skills and a team. Install it by handing one prompt to your coding agent.">
   <meta property="og:title" content="Vornik — agent swarms that you own">
-  <meta property="og:description" content="An asynchronous, local-first orchestration daemon for AI agent swarms. The install is AI-first: hand one prompt to your coding agent.">
+  <meta property="og:description" content="Autonomous AI work and assisted coding on one self-hosted daemon. Install it by handing one prompt to your coding agent.">
   <meta property="og:url" content="https://vornik.io">
   <meta property="og:image" content="https://vornik.io/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -15,8 +15,6 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <!-- Both schemes are supported; theme-color tracks the active one so the
-       mobile address bar matches the page (brand-500 per theme). -->
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F6F4EF">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#10141A">
@@ -24,138 +22,125 @@
   <link rel="stylesheet" href="/brand-tokens.css">
   <style>
     /* ============================================================
-       Vornik palette: EaseIT Labs Brand Manual v1.2 (October 2026).
-         light: Paper ground, navy ink, AA link blue (#1665AD; EaseIT
-                Blue #1C7ED6 is reserved for the mark and large type).
-         dark:  the manual's dark tokens: navy-black ground, light-blue
-                accent, green only for "live / ok" and the mark's dot.
-       Scheme resolution is pure CSS so it works with JavaScript
-       disabled: dark is the default (matching the app), an explicit
-       OS light preference overrides it, and the header toggle can
-       pin either via [data-theme] (persisted in localStorage).
+       Vornik palette: EaseIT Labs Brand Manual v1.2.
+       Dark is the default (matching the app); an OS light preference
+       overrides it; the header toggle pins either via [data-theme].
+       Blue = agents / action, green = the one "done" signal.
        ============================================================ */
     :root {
       color-scheme: dark;
-      --bg: #10141A;            /* manual dark ground */
-      --panel: #171C23;         /* raised card */
-      --panel-deep: #0B0E13;    /* inset (code, transcript) */
-      --line: #262C35;          /* hairline border */
-      --ink: #ECE9E1;           /* primary text */
-      --muted: #9AA2AC;         /* secondary text */
-      --accent: #4FA3E6;        /* EaseIT blue on dark: links */
-      --accent-strong: #6FB4EE; /* hover */
-      --ok: #8FCB5B;            /* signal green on dark: live / ok */
+      --bg: #10141A;
+      --panel: #171C23;
+      --panel-deep: #0B0E13;
+      --line: #262C35;
+      --line-strong: #39414C;
+      --ink: #ECE9E1;
+      --muted: #9AA2AC;
+      --accent: #4FA3E6;
+      --accent-strong: #6FB4EE;
+      --on-accent: #0B0E13;
+      --ok: #8FCB5B;
       --mark-agent: #6FB4EE; --mark-outcome: #9BDB6B;
-      --header-bg: rgba(16, 20, 26, 0.82);
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      --header-bg: rgba(16, 20, 26, 0.86);
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
       --display: var(--font-display);
       --body: var(--font-body);
       --mono: var(--font-mono);
     }
-
-    /* Light tokens — applied when the OS prefers light and the visitor
-       hasn't pinned a theme, and whenever the toggle sets data-theme=light. */
-    :root[data-theme="light"],
-    :root:not([data-theme]) {
-      /* keep dark as the no-preference default below; light comes via the media query */
-    }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme]) {
         color-scheme: light;
-        --bg: #F6F4EF;
-        --panel: #FFFFFF;
-        --panel-deep: #FBFAF7;
-        --line: #E6E1D6;
-        --ink: #101826;
-        --muted: #5E6672;
-        --accent: #1665AD;
-        --accent-strong: #11528D;
-        --ok: #467A20;
-        --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
-        --header-bg: rgba(246, 244, 239, 0.82);
-        --shadow: 0 20px 50px rgba(16, 24, 38, 0.10);
+        --bg: #F6F4EF; --panel: #FFFFFF; --panel-deep: #FBFAF7;
+        --line: #E6E1D6; --line-strong: #CFC8B8;
+        --ink: #101826; --muted: #5E6672;
+        --accent: #1665AD; --accent-strong: #11528D; --on-accent: #FFFFFF;
+        --ok: #467A20; --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
+        --header-bg: rgba(246, 244, 239, 0.86);
+        --shadow: 0 24px 60px rgba(16, 24, 38, 0.12);
       }
     }
     :root[data-theme="light"] {
       color-scheme: light;
-      --bg: #F6F4EF;
-      --panel: #FFFFFF;
-      --panel-deep: #FBFAF7;
-      --line: #E6E1D6;
-      --ink: #101826;
-      --muted: #5E6672;
-      --accent: #1665AD;
-      --accent-strong: #11528D;
-      --ok: #467A20;
-      --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
-      --header-bg: rgba(246, 244, 239, 0.82);
-      --shadow: 0 20px 50px rgba(16, 24, 38, 0.10);
+      --bg: #F6F4EF; --panel: #FFFFFF; --panel-deep: #FBFAF7;
+      --line: #E6E1D6; --line-strong: #CFC8B8;
+      --ink: #101826; --muted: #5E6672;
+      --accent: #1665AD; --accent-strong: #11528D; --on-accent: #FFFFFF;
+      --ok: #467A20; --mark-agent: #1C7ED6; --mark-outcome: #6EA83B;
+      --header-bg: rgba(246, 244, 239, 0.86);
+      --shadow: 0 24px 60px rgba(16, 24, 38, 0.12);
     }
-    /* Explicit dark pin re-asserts the defaults (so the toggle can return to
-       dark even on a light-preference OS). */
     :root[data-theme="dark"] {
       color-scheme: dark;
-      --bg: #10141A; --panel: #171C23; --panel-deep: #0B0E13; --line: #262C35;
-      --ink: #ECE9E1; --muted: #9AA2AC; --accent: #4FA3E6; --accent-strong: #6FB4EE;
+      --bg: #10141A; --panel: #171C23; --panel-deep: #0B0E13;
+      --line: #262C35; --line-strong: #39414C;
+      --ink: #ECE9E1; --muted: #9AA2AC;
+      --accent: #4FA3E6; --accent-strong: #6FB4EE; --on-accent: #0B0E13;
       --ok: #8FCB5B; --mark-agent: #6FB4EE; --mark-outcome: #9BDB6B;
-      --header-bg: rgba(16, 20, 26, 0.82);
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      --header-bg: rgba(16, 20, 26, 0.86);
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
     }
 
     * { box-sizing: border-box; }
-
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--body);
-      font-size: 16px;
-      line-height: 1.55;
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: var(--body); font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-
     a { color: var(--accent); text-decoration: none; }
     a:hover { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 0.2em; }
     a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-      border-radius: 2px;
+      outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+    }
+    .shell { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
 
-    .shell { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: var(--body); font-weight: 700; font-size: 0.95rem;
+      padding: 10px 18px; border-radius: 8px; border: 1px solid transparent;
+      cursor: pointer; white-space: nowrap; line-height: 1.2;
+    }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-strong); color: var(--on-accent); text-decoration: none; }
+    .btn svg { width: 16px; height: 16px; flex: none; }
 
-    /* ---------- nav ---------- */
+    /* ---------- header ---------- */
     header {
+      position: sticky; top: 0; z-index: 5;
+      background: var(--header-bg); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
-      position: sticky; top: 0; z-index: 3;
-      background: var(--header-bg);
-      backdrop-filter: blur(10px);
     }
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 16px; }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; }
     .brand {
       font-family: var(--display); font-weight: 700; font-size: 1.25rem;
       color: var(--ink); letter-spacing: -0.01em;
       display: flex; align-items: center; gap: 10px;
     }
+    .brand:hover { color: var(--ink); text-decoration: none; }
     .brand-mark { width: 28px; height: 28px; display: block; flex: none; }
     .brand-mark .agent { fill: var(--mark-agent); }
     .brand-mark .outcome { fill: var(--mark-outcome); }
-    .nav-right { display: flex; align-items: center; gap: 22px; }
-    .nav-links { display: flex; gap: 22px; font-size: 0.95rem; flex-wrap: wrap; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-links { display: flex; gap: 22px; font-size: 0.95rem; }
     .nav-links a { color: var(--muted); }
     .nav-links a:hover { color: var(--ink); text-decoration: none; }
-
+    .nav-right .btn { padding: 8px 16px; font-size: 0.9rem; }
     .theme-toggle {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 34px; height: 34px; flex-shrink: 0;
+      width: 36px; height: 36px; flex-shrink: 0; padding: 0;
       background: transparent; color: var(--muted);
       border: 1px solid var(--line); border-radius: 8px; cursor: pointer;
-      padding: 0;
     }
     .theme-toggle:hover { color: var(--ink); border-color: var(--accent); }
     .theme-toggle svg { width: 17px; height: 17px; }
     .theme-toggle .icon-sun { display: none; }
     .theme-toggle .icon-moon { display: block; }
-    /* Show the sun in dark mode (click → go light), moon in light mode. */
     :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
     :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
     @media (prefers-color-scheme: light) {
@@ -167,9 +152,8 @@
 
     /* ---------- hero ---------- */
     .hero {
-      display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-      gap: 56px; align-items: start;
-      padding: 76px 0 72px;
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 56px; align-items: center; padding: 72px 0 80px;
     }
     .eyebrow {
       font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
@@ -177,173 +161,227 @@
     }
     h1 {
       font-family: var(--display); font-weight: 600;
-      font-size: clamp(2.5rem, 5.4vw, 3.9rem);
-      line-height: 1.04; letter-spacing: -0.015em;
-      margin: 14px 0 18px;
+      font-size: clamp(2.6rem, 5.6vw, 4.3rem);
+      line-height: 1.02; letter-spacing: -0.02em; margin: 14px 0 20px;
     }
     h1 .accent { color: var(--accent); }
-    .lede { color: var(--muted); font-size: 1.08rem; max-width: 34em; margin: 0 0 34px; }
-    .lede strong { color: var(--ink); font-weight: 500; }
+    .lede { color: var(--muted); font-size: 1.12rem; max-width: 32em; margin: 0 0 30px; }
+    .lede strong { color: var(--ink); font-weight: 600; }
 
-    /* install lanes */
-    .lane { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-    .lane + .lane { margin-top: 14px; }
-    .lane-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 10px 16px; font-family: var(--mono); font-size: 0.78rem;
-      color: var(--muted); border-bottom: 1px solid var(--line);
-      background: var(--panel-deep);
+    /* ---------- install widget ---------- */
+    .install {
+      border: 1px solid color-mix(in srgb, var(--accent) 60%, var(--line));
+      border-radius: 12px; background: var(--panel); overflow: hidden;
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent);
     }
-    .lane-primary { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
-    .lane-primary .lane-head { color: var(--accent); }
-    .lane-body { padding: 16px; background: var(--panel); }
-    .prompt-text {
-      font-family: var(--mono); font-size: 0.92rem; line-height: 1.6;
-      margin: 0; color: var(--ink); word-break: break-word;
+    .install-tabs { display: flex; border-bottom: 1px solid var(--line); background: var(--panel-deep); }
+    .install-tab {
+      flex: 1 1 auto; padding: 10px 14px; background: transparent; border: 0;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      font-family: var(--body); font-size: 0.88rem; font-weight: 600;
+      color: var(--muted); cursor: pointer;
     }
-    .prompt-text .url { color: var(--accent); }
-    .lane-note { margin: 12px 0 0; font-size: 0.85rem; color: var(--muted); }
-    .lane-note code { font-family: var(--mono); font-size: 0.9em; }
-    .shell-line {
-      font-family: var(--mono); font-size: 0.92rem; margin: 0; color: var(--ink);
-      word-break: break-word;
+    .install-tab:hover { color: var(--ink); }
+    .install-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+    .install-body { padding: 18px 18px 16px; }
+    .install-row { display: flex; align-items: flex-start; gap: 14px; }
+    .install-cmd {
+      flex: 1 1 auto; min-width: 0; margin: 0;
+      font-family: var(--mono); font-size: 0.95rem; line-height: 1.55;
+      color: var(--ink); word-break: break-word;
     }
-    .copy-btn {
-      font-family: var(--mono); font-size: 0.75rem;
-      color: var(--ink); background: transparent;
-      border: 1px solid var(--line); border-radius: 6px;
-      padding: 4px 12px; cursor: pointer; flex-shrink: 0;
+    .install-cmd .url { color: var(--accent); }
+    .install-cmd .prompt-sign { color: var(--muted); user-select: none; }
+    .install-note { margin: 12px 0 0; font-size: 0.86rem; color: var(--muted); line-height: 1.55; }
+    .install-note code { font-family: var(--mono); font-size: 0.9em; }
+    .install-copy { min-width: 136px; }
+    .reassure { margin: 14px 0 0; font-size: 0.88rem; color: var(--muted); }
+    .reassure .ok-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ok); margin-right: 8px; vertical-align: 1px;
     }
-    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .install-select {
-      font-family: var(--mono); font-size: 0.78rem;
-      color: var(--accent); background: transparent;
-      border: 1px solid var(--line); border-radius: 6px;
-      padding: 4px 10px; cursor: pointer; max-width: 100%;
-    }
-    .install-select:hover { border-color: var(--accent); }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-    }
+    .hero-links { margin: 18px 0 0; font-size: 0.95rem; display: flex; gap: 22px; flex-wrap: wrap; }
 
-    .hero-links { margin-top: 26px; font-size: 0.95rem; display: flex; gap: 24px; flex-wrap: wrap; }
-
-    /* ---------- transcript (signature) ---------- */
-    .transcript {
-      max-width: 640px; margin: 0 0 48px;
-      border: 1px solid var(--line); border-radius: 12px;
-      background: var(--panel-deep);
-      font-family: var(--mono); font-size: 0.86rem; line-height: 1.75;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+    /* ---------- use-case console (the signature) ---------- */
+    .console {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--panel-deep); box-shadow: var(--shadow); overflow: hidden;
     }
-    .transcript-head {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 18px; border-bottom: 1px solid var(--line);
-      color: var(--muted); font-size: 0.78rem;
+    .console-switch {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line); background: var(--panel);
     }
-    .transcript-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px color-mix(in srgb, var(--ok) 70%, transparent); }
-    .transcript-body { padding: 18px 20px 22px; }
-    .transcript-body p { margin: 0 0 4px; white-space: pre-wrap; word-break: break-word; }
-    .t-user  { color: var(--accent); }
-    .t-cmd   { color: var(--ink); }
-    .t-out   { color: var(--muted); }
-    .t-ok    { color: var(--ok); }
+    .mode {
+      display: flex; align-items: center; gap: 10px; text-align: left;
+      padding: 14px 18px; background: transparent; border: 0; cursor: pointer;
+      color: var(--muted); font-family: var(--display); font-weight: 600; font-size: 1rem;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .mode + .mode { border-left: 1px solid var(--line); }
+    .mode:hover { color: var(--ink); }
+    .mode[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); background: var(--panel-deep); }
+    .mode .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--line-strong); }
+    .mode[aria-selected="true"] .dot { background: var(--mark-agent); }
+    .mode small { display: block; font-family: var(--body); font-weight: 500; font-size: 0.78rem; color: var(--muted); }
+    .console-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 10px 18px; border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 0.76rem; color: var(--muted);
+    }
+    .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.35; transition: opacity 0.3s; }
+    .console-head .done::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+    .console.finished .console-head .done { opacity: 1; color: var(--ok); }
+    .console-body {
+      padding: 16px 18px 20px; min-height: 300px;
+      font-family: var(--mono); font-size: 0.84rem; line-height: 1.7;
+    }
+    .console-body p, .transcript-body p { margin: 0 0 3px; white-space: pre-wrap; word-break: break-word; }
+    .t-in   { color: var(--accent); }
+    .t-cmd  { color: var(--ink); }
+    .t-out  { color: var(--muted); }
+    .t-ok   { color: var(--ok); }
+    .t-ask  { color: var(--ink); }
+    .t-ask b { color: var(--accent); font-weight: 400; }
+    .console-foot {
+      border-top: 1px solid var(--line); padding: 12px 18px;
+      font-size: 0.88rem; color: var(--muted); background: var(--panel);
+    }
+    .console-foot strong { color: var(--ink); font-weight: 600; }
+    .console [role="tabpanel"][hidden] { display: none; }
 
     @media (prefers-reduced-motion: no-preference) {
-      .transcript-body p { opacity: 0; animation: t-in 0.4s ease-out forwards; }
-      .transcript-body p:nth-child(1)  { animation-delay: 0.3s; }
-      .transcript-body p:nth-child(2)  { animation-delay: 1.0s; }
-      .transcript-body p:nth-child(3)  { animation-delay: 1.9s; }
-      .transcript-body p:nth-child(4)  { animation-delay: 2.5s; }
-      .transcript-body p:nth-child(5)  { animation-delay: 3.1s; }
-      .transcript-body p:nth-child(6)  { animation-delay: 3.7s; }
-      .transcript-body p:nth-child(7)  { animation-delay: 4.5s; }
-      .transcript-body p:nth-child(8)  { animation-delay: 5.1s; }
-      .transcript-body p:nth-child(9)  { animation-delay: 5.9s; }
-      .transcript-body p:nth-child(10) { animation-delay: 6.5s; }
-      .transcript.pending .transcript-body p { animation-play-state: paused; }
-      @keyframes t-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+      .play p { opacity: 0; animation: line-in 0.35s ease-out forwards; animation-delay: calc(var(--i, 0) * 0.55s + 0.2s); }
+      .play.paused p { animation-play-state: paused; }
+      @keyframes line-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
     }
 
     /* ---------- sections ---------- */
-    section { padding: 64px 0; border-top: 1px solid var(--line); }
+    section { padding: 88px 0; border-top: 1px solid var(--line); }
     h2 {
-      font-family: var(--display); font-weight: 500;
-      font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -0.01em;
-      margin: 6px 0 30px;
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.1;
+      letter-spacing: -0.015em; margin: 0 0 14px; max-width: 22em;
     }
-    .defn {
-      font-family: var(--display); font-weight: 500;
-      font-size: clamp(1.25rem, 2.4vw, 1.7rem); line-height: 1.35;
-      max-width: 30em; margin: 0;
-    }
-    .defn .quiet { color: var(--muted); }
+    .section-lede { color: var(--muted); font-size: 1.08rem; max-width: 38em; margin: 0 0 44px; }
 
-    /* ---------- hero use cases ---------- */
-    .usecases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .usecase {
-      border: 1px solid var(--line); border-radius: 10px;
-      background: var(--panel-deep); padding: 16px 18px 18px;
+    /* two ways to work */
+    .ways { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .way { padding: 34px 34px 32px; background: var(--panel); display: flex; flex-direction: column; }
+    .way + .way { border-left: 1px solid var(--line); }
+    .way h3 {
+      font-family: var(--display); font-weight: 600; font-size: 1.5rem;
+      margin: 0 0 10px; display: flex; align-items: center; gap: 12px;
     }
-    .usecase h2 {
-      font-family: var(--body); font-weight: 600; font-size: 0.95rem;
-      margin: 0 0 6px; color: var(--accent);
+    .way h3 .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--mark-agent); flex: none; }
+    .way > p { color: var(--muted); margin: 0 0 22px; max-width: 34em; }
+    .way h4 { font-family: var(--body); font-size: 0.92rem; font-weight: 700; margin: 0 0 10px; }
+    .way ul { list-style: none; padding: 0; margin: 0 0 26px; }
+    .way li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 0.97rem; }
+    .way li:last-child { border-bottom: 1px solid var(--line); }
+    .way li::before {
+      content: ""; position: absolute; left: 2px; top: 1.1em;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
     }
-    .usecase p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .way .connects { margin: auto 0 0; font-size: 0.88rem; color: var(--muted); }
+    .way .connects strong { color: var(--ink); font-weight: 600; }
 
-    .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    .cap {
-      border: 1px solid var(--line); border-radius: 10px;
-      background: var(--panel-deep); padding: 22px 22px 24px;
+    /* install steps */
+    .steps-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
+    .steps { list-style: none; padding: 0; margin: 0 0 30px; counter-reset: step; }
+    .steps li { counter-increment: step; position: relative; padding: 0 0 26px 54px; }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 0; top: -2px;
+      width: 36px; height: 36px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-family: var(--display); font-weight: 600; font-size: 1rem;
+      border: 1px solid var(--line-strong); color: var(--ink); background: var(--panel);
     }
-    .cap h3 { font-family: var(--body); font-weight: 600; font-size: 1rem; margin: 0 0 8px; }
-    .cap p { margin: 0; color: var(--muted); font-size: 0.93rem; }
-    .cap code { font-family: var(--mono); font-size: 0.85em; color: var(--ink); }
-
-
-    .editions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .edition {
-      border: 1px solid var(--line); border-radius: 10px;
-      background: var(--panel-deep); padding: 24px;
+    .steps li:not(:last-child)::after {
+      content: ""; position: absolute; left: 18px; top: 38px; bottom: 4px; width: 1px; background: var(--line-strong);
     }
-    .edition h3 { font-family: var(--display); font-weight: 500; font-size: 1.2rem; margin: 0 0 6px; }
-    .edition .tag { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
-    .edition p { color: var(--muted); font-size: 0.93rem; margin: 12px 0 16px; }
-
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 30px 0 44px; color: var(--muted); font-size: 0.85rem;
+    .steps h3 { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin: 2px 0 4px; }
+    .steps p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+    .transcript {
+      border: 1px solid var(--line); border-radius: 12px; background: var(--panel-deep);
+      font-family: var(--mono); font-size: 0.84rem; line-height: 1.75;
+      overflow: hidden; box-shadow: var(--shadow);
     }
+    .transcript-head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 18px; border-bottom: 1px solid var(--line);
+      color: var(--muted); font-size: 0.76rem;
+    }
+    .transcript-head .live { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+    .transcript-body { padding: 16px 18px 20px; }
+
+    /* shared core */
+    .core { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .core > div { padding: 26px 26px 28px 0; border-bottom: 1px solid var(--line); }
+    .core > div:not(:nth-child(3n+1)) { padding-left: 26px; border-left: 1px solid var(--line); }
+    .core h3 { font-family: var(--display); font-weight: 600; font-size: 1.1rem; margin: 0 0 6px; }
+    .core p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    /* editions */
+    .editions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .edition { border: 1px solid var(--line); border-radius: 12px; padding: 26px 28px; background: var(--panel); }
+    .edition h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; margin: 0 0 4px; }
+    .edition .tag { font-size: 0.85rem; color: var(--muted); }
+    .edition p { color: var(--muted); font-size: 0.95rem; margin: 12px 0 16px; }
+
+    /* final CTA */
+    section.final { text-align: center; padding: 104px 0 112px; }
+    .final h2 { margin: 0 auto 14px; }
+    .final .section-lede { margin: 0 auto 34px; }
+    .final .install { max-width: 720px; margin: 0 auto; text-align: left; }
+
+    footer { border-top: 1px solid var(--line); padding: 30px 0 44px; color: var(--muted); font-size: 0.88rem; }
     .foot-row { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
     footer a { color: var(--muted); }
     footer a:hover { color: var(--ink); }
     .foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
 
-    @media (max-width: 920px) {
-      .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 56px; }
-      .cap-grid, .editions { grid-template-columns: 1fr; }
+    /* ---------- responsive ---------- */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; gap: 44px; padding: 48px 0 60px; }
+      .steps-grid { grid-template-columns: 1fr; gap: 36px; }
+      .core { grid-template-columns: 1fr 1fr; }
+      .core > div, .core > div:not(:nth-child(3n+1)) { padding: 24px 22px 24px 0; border-left: 0; }
+      .core > div:nth-child(2n) { padding-left: 22px; border-left: 1px solid var(--line); }
     }
-    @media (max-width: 480px) {
-      .usecases { grid-template-columns: 1fr; }
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .ways, .editions { grid-template-columns: 1fr; }
+      .way + .way { border-left: 0; border-top: 1px solid var(--line); }
+      .way { padding: 26px 22px; }
+      section { padding: 64px 0; }
+      section.final { padding: 72px 0 80px; }
+    }
+    @media (max-width: 560px) {
+      .install-row { flex-direction: column; }
+      .install-copy { width: 100%; }
+      .core { grid-template-columns: 1fr; }
+      .core > div, .core > div:nth-child(2n) { padding: 20px 0; border-left: 0; }
+      .mode { padding: 12px 14px; font-size: 0.95rem; }
+      .mode small { display: none; }
+      .console-body { min-height: 0; padding: 14px 14px 16px; font-size: 0.72rem; line-height: 1.65; }
     }
   </style>
 </head>
 <body>
   <header>
     <nav class="shell" aria-label="Main">
-      <span class="brand">
+      <a class="brand" href="/" aria-label="Vornik home">
         <svg class="brand-mark" viewBox="0 0 120 120" width="28" height="28" aria-hidden="true" focusable="false"><path d="M42 24H26V96H42M78 24H94V96H78" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle class="agent" cx="47" cy="45" r="10"/><circle class="agent" cx="73" cy="45" r="10"/><circle class="outcome" cx="60" cy="75" r="11"/></svg>
         Vornik
-      </span>
+      </a>
       <span class="nav-right">
         <span class="nav-links">
-          <a href="https://docs.vornik.io/getting-started/">Getting started</a>
+          <a href="#use-cases">Use cases</a>
           <a href="https://docs.vornik.io">Docs</a>
           <a href="https://github.com/EaseIT-cz/vornik">GitHub</a>
           <a href="https://docs.vornik.io/editions/">Enterprise</a>
         </span>
+        <a class="btn btn-primary" href="#install">Install</a>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch color theme" title="Switch light / dark">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -353,144 +391,248 @@
   </header>
 
   <main>
+    <!-- ================= HERO ================= -->
     <div class="shell hero">
-      <div>
+      <div id="install">
         <p class="eyebrow">Boosts your agents with RAG, skills, workflows and more</p>
         <h1 id="hero-title">Agent swarms that <span class="accent">you own</span>.</h1>
         <p class="lede">
-          Vornik is an asynchronous, local-first orchestration daemon. Define
-          projects, submit tasks, and isolated agents work through them while
-          you're away — <strong>your agents. your servers. your rules</strong>.
-          No cloud sign-up.
+          One daemon on your own machine, two ways to use it: teams of agents
+          that work while you're away, and memory and a team for the coding
+          agent you already use. <strong>Your agents. Your servers. Your rules.</strong>
         </p>
 
-        <div class="lane lane-primary">
-          <div class="lane-head">
-            <label for="install-mode" class="sr-only">Choose how to install Vornik</label>
-            <select id="install-mode" class="install-select" aria-label="Choose how to install Vornik">
-              <option value="agent" selected>recommended — hand it to your coding agent</option>
-              <option value="linux">Linux installer</option>
-              <option value="mac">macOS installer</option>
-            </select>
-            <button class="copy-btn" data-copy="install-cmd" aria-label="Copy the selected install command">copy</button>
+        <div class="install" data-install>
+          <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
+            <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
+            <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
           </div>
-          <div class="lane-body">
-            <p class="prompt-text" id="install-cmd">Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
-            <p class="lane-note" id="install-note">
-              Paste into Claude Code, Codex, Gemini CLI, or any coding agent
-              with shell access. <a href="https://agents.vornik.io">AGENTS.md</a>
-              is a runbook it can execute and verify — install, LLM key, first
-              task, and its own persistent memory on your Vornik. It asks you
-              before anything privileged.
-            </p>
+          <div class="install-body">
+            <div class="install-row">
+              <p class="install-cmd" data-cmd>Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
+              <button class="btn btn-primary install-copy" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <span data-copy-label>Copy prompt</span>
+              </button>
+            </div>
+            <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.</p>
           </div>
         </div>
-
+        <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Free and open source. Linux and macOS. No account, no cloud sign-up.</p>
         <p class="hero-links">
           <a href="https://docs.vornik.io/getting-started/">Read the getting-started guide</a>
-          <a href="https://github.com/EaseIT-cz/vornik">Star it on GitHub</a>
+          <a href="https://github.com/EaseIT-cz/vornik">Browse the source on GitHub</a>
         </p>
       </div>
 
-      <div class="usecases" aria-label="Use cases">
-        <div class="usecase">
-          <h2>Autonomous AI</h2>
-          <p>Start work from a goal, a schedule, a signed webhook or a Forge event (a labelled issue, a pull request, a failing CI run), and teams of specialist agents carry it out in isolated containers as one stage of your wider pipeline, pausing only where you have asked for approval.</p>
+      <div class="console" id="console">
+        <div class="console-switch" role="tablist" aria-label="Use case">
+          <button class="mode" type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="true">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Autonomous AI<small>work that runs without you</small></span>
+          </button>
+          <button class="mode" type="button" role="tab" id="tab-code" aria-controls="panel-code" aria-selected="false" tabindex="-1">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Assisted coding<small>your coding agent, upgraded</small></span>
+          </button>
         </div>
-        <div class="usecase">
-          <h2>Assisted Coding</h2>
-          <p>Connect Claude Code, Codex or Hermes and your coding agent gets persistent project memory, shared knowledge skills, and a team it can hand reviews, research and ingests to while it keeps working.</p>
+
+        <div role="tabpanel" id="panel-auto" aria-labelledby="tab-auto">
+          <div class="console-head"><span>vornik · repo maintenance</span><span class="done">done</span></div>
+          <div class="console-body play" aria-hidden="true">
+            <p class="t-in"  style="--i:0">▸ GitHub: issue #142 labelled "bug"</p>
+            <p class="t-out" style="--i:1">  forge       task queued for the dev team</p>
+            <p class="t-cmd" style="--i:2">  researcher  reads the code and project memory</p>
+            <p class="t-cmd" style="--i:3">  developer   writes the fix, tests pass</p>
+            <p class="t-cmd" style="--i:4">  reviewer    checks the diff and CI</p>
+            <p class="t-ok"  style="--i:5">  ok  pull request #143 opened</p>
+            <p class="t-in"  style="--i:6">▸ 08:00 every weekday: inbox digest</p>
+            <p class="t-ask" style="--i:7">  needs you   send the refund request? <b>approved on phone</b></p>
+            <p class="t-ok"  style="--i:8">  ok  digest sent to Telegram</p>
+          </div>
+          <p class="sr-only">Example: a labelled GitHub issue starts a task; researcher, developer and reviewer agents fix it and open a pull request. A weekday schedule runs an inbox digest, asks for approval on the phone before sending an email, and delivers the summary to Telegram.</p>
+          <div class="console-foot">Started by <strong>schedules, webhooks and Forge events</strong>. Pauses only where you asked for approval.</div>
+        </div>
+
+        <div role="tabpanel" id="panel-code" aria-labelledby="tab-code" hidden>
+          <div class="console-head"><span>claude code · with vornik</span><span class="done">done</span></div>
+          <div class="console-body play" aria-hidden="true">
+            <p class="t-in"  style="--i:0">&gt; fix the flaky scheduler test</p>
+            <p class="t-cmd" style="--i:1">  recall "scheduler lease design"</p>
+            <p class="t-out" style="--i:2">  3 notes found, incl. why leases expire</p>
+            <p class="t-cmd" style="--i:3">  edit internal/scheduler/lease.go, tests pass</p>
+            <p class="t-cmd" style="--i:4">  delegate architectural-review</p>
+            <p class="t-out" style="--i:5">  queued on Vornik, keeps coding meanwhile</p>
+            <p class="t-ok"  style="--i:6">  ok  review came back green, 0 findings</p>
+            <p class="t-cmd" style="--i:7">  remember "root cause: clock skew on renewal"</p>
+            <p class="t-ok"  style="--i:8">  ok  stored for the next session</p>
+          </div>
+          <p class="sr-only">Example: in Claude Code, the agent recalls prior design notes from Vornik memory, makes a fix, delegates an architectural review to Vornik while it keeps working, gets a green review back, and stores the root cause for the next session.</p>
+          <div class="console-foot">Works with <strong>Claude Code, Codex and Hermes</strong>. Memory and skills carry across sessions and machines.</div>
         </div>
       </div>
     </div>
 
-    <section>
+    <!-- ================= TWO WAYS ================= -->
+    <section id="use-cases" aria-labelledby="ways-title">
       <div class="shell">
-        <div class="transcript pending" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
-          <div class="transcript-head"><span class="dot" aria-hidden="true"></span>your agent · setting up vornik</div>
-          <div class="transcript-body" aria-hidden="true">
-            <p class="t-user">&gt; Set up Vornik for me — follow AGENTS.md.</p>
-            <p class="t-cmd">$ curl -fsSL https://get.vornik.io | bash</p>
-            <p class="t-ok">  ok  Vornik is up and ready.</p>
-            <p class="t-cmd">$ curl -s localhost:8080/readyz</p>
-            <p class="t-out">  {"status":"ready"}</p>
-            <p class="t-cmd">$ vornikctl task submit -p assistant --prompt "Say hello"</p>
-            <p class="t-ok">  ok  task COMPLETED — the agent answered</p>
-            <p class="t-cmd">$ recall "smoke canary"</p>
-            <p class="t-ok">  ok  memory round-trip verified</p>
-            <p class="t-user">&gt; Done. I'll remember this install.</p>
-          </div>
-        </div>
-        <p class="defn">
-          You submit work and walk away. Vornik queues it, runs each agent in
-          its own container, and persists every result —
-          <span class="quiet">so the swarm keeps working when your editor is closed.</span>
-        </p>
-      </div>
-    </section>
-
-    <section aria-labelledby="caps-title">
-      <div class="shell">
-        <p class="eyebrow">What you get</p>
-        <h2 id="caps-title">Built for data-sensitive, self-hosted work</h2>
-        <div class="cap-grid">
-          <div class="cap">
-            <h3>Local-first</h3>
-            <p>The daemon and every agent container run on one host you
-            control. Works with self-hosted open-weight models or any
-            OpenAI-compatible cloud endpoint.</p>
-          </div>
-          <div class="cap">
-            <h3>Zero-egress agents</h3>
-            <p>Each task's agent runs in an isolated Podman container with
-            no network by default. The daemon makes the outbound model
-            calls; agents never touch the network.</p>
-          </div>
-          <div class="cap">
-            <h3>Persistent project memory</h3>
-            <p>pgvector-backed RAG per project. Swarm agents recall prior
-            work — and your coding agent gets <code>remember</code> /
-            <code>recall</code> across sessions via the companion plugin.</p>
-          </div>
-          <div class="cap">
-            <h3>Swarms &amp; workflows</h3>
-            <p>Roles, step graphs, gates, retries, delegation — plus
-            autonomous task creation with approval gates when you want the
-            swarm proposing its own work.</p>
-          </div>
+        <h2 id="ways-title">One install, two ways to work</h2>
+        <p class="section-lede">Vornik is a general-purpose engine for agent teams. Most people start with one of these and end up using both, on the same daemon, with the same memory.</p>
+        <div class="ways">
+          <article class="way">
+            <h3><span class="dot" aria-hidden="true"></span>Autonomous AI</h3>
+            <p>Start work from a goal, a schedule, a signed webhook or a Forge event, and teams of specialist agents carry it out in isolated containers as one stage of your wider pipeline, pausing only where you have asked for approval.</p>
+            <h4>People use it to</h4>
+            <ul>
+              <li>Review every pull request and open fixes for labelled issues</li>
+              <li>Watch an inbox, turn dates into calendar drafts, and get a summary on Sunday</li>
+              <li>Research a topic overnight and publish a report they can share</li>
+              <li>Hand work from one project to another, or to any agent that speaks A2A</li>
+            </ul>
+            <p class="connects">Talk to it from <strong>Telegram, email or the web UI</strong>. Approve sensitive steps on your phone.</p>
+          </article>
+          <article class="way">
+            <h3><span class="dot" aria-hidden="true"></span>Assisted coding</h3>
+            <p>Connect Claude Code, Codex or Hermes and your coding agent gets persistent project memory, shared knowledge skills, and a team it can hand reviews, research and ingests to while it keeps working.</p>
+            <h4>People use it to</h4>
+            <ul>
+              <li>Recall why code is built the way it is before changing it</li>
+              <li>Get an architectural review after each commit without waiting for it</li>
+              <li>Turn a fix they worked out once into a skill every future session gets</li>
+              <li>Keep what one machine learned available on every other machine</li>
+            </ul>
+            <p class="connects">Installs as a <strong>plugin for Claude Code and Codex</strong>; any other CLI can use the same memory over plain HTTP.</p>
+          </article>
         </div>
       </div>
     </section>
 
+    <!-- ================= HOW INSTALL WORKS ================= -->
+    <section aria-labelledby="steps-title">
+      <div class="shell steps-grid">
+        <div>
+          <h2 id="steps-title">Your coding agent does the install</h2>
+          <p class="section-lede">The runbook at agents.vornik.io is written for agents: every step is a command plus a check it can verify. You stay in charge of anything privileged.</p>
+          <ol class="steps">
+            <li>
+              <h3>Paste one prompt</h3>
+              <p>Copy the prompt above into Claude Code, Codex, Gemini CLI or any agent with a shell.</p>
+            </li>
+            <li>
+              <h3>It installs and checks itself</h3>
+              <p>Vornik, PostgreSQL with pgvector and a user service, then your model key and a first task that has to complete.</p>
+            </li>
+            <li>
+              <h3>It wires itself in</h3>
+              <p>Your agent gets its own project and memory on your Vornik, so the next session starts knowing what this one learned.</p>
+            </li>
+          </ol>
+          <a class="btn btn-primary" href="#install">Copy the install prompt</a>
+        </div>
+
+        <div class="transcript" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
+          <div class="transcript-head"><span class="live" aria-hidden="true"></span>your agent · setting up vornik</div>
+          <div class="transcript-body play paused" id="setup-play" aria-hidden="true">
+            <p class="t-in"  style="--i:0">&gt; Set up Vornik for me. Follow agents.vornik.io</p>
+            <p class="t-cmd" style="--i:1">$ curl -fsSL https://get.vornik.io | bash</p>
+            <p class="t-ok"  style="--i:2">  ok  Vornik is up and ready.</p>
+            <p class="t-cmd" style="--i:3">$ curl -s localhost:8080/readyz</p>
+            <p class="t-out" style="--i:4">  {"status":"ready"}</p>
+            <p class="t-cmd" style="--i:5">$ vornikctl task submit -p assistant --prompt "Say hello"</p>
+            <p class="t-ok"  style="--i:6">  ok  task COMPLETED, the agent answered</p>
+            <p class="t-cmd" style="--i:7">$ recall "smoke canary"</p>
+            <p class="t-ok"  style="--i:8">  ok  memory round-trip verified</p>
+            <p class="t-in"  style="--i:9">&gt; Done. I'll remember this install.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SHARED CORE ================= -->
+    <section aria-labelledby="core-title">
+      <div class="shell">
+        <h2 id="core-title">The same core under both</h2>
+        <p class="section-lede">Whichever way you use it, the work runs on one host you control, and every result is kept.</p>
+        <div class="core">
+          <div>
+            <h3>Runs on your machine</h3>
+            <p>A home server, a mini-PC or a rented box. Linux with rootless Podman; on macOS it runs inside a small Linux VM.</p>
+          </div>
+          <div>
+            <h3>Any model you choose</h3>
+            <p>Self-hosted open-weight models or any OpenAI-compatible provider, picked per role.</p>
+          </div>
+          <div>
+            <h3>Isolated agents</h3>
+            <p>Each agent runs in its own container. Roles can run with no network at all, reaching tools only through the daemon.</p>
+          </div>
+          <div>
+            <h3>Memory that persists</h3>
+            <p>Every project keeps its own searchable memory, so agents and coding sessions build on earlier work.</p>
+          </div>
+          <div>
+            <h3>You approve what matters</h3>
+            <p>Approval gates where you want them, answered on your paired phone. Credentials are entered there, never in chat.</p>
+          </div>
+          <div>
+            <h3>Work survives restarts</h3>
+            <p>Tasks are leased, not fired and forgotten. A crash or a reboot puts the work back in the queue.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EDITIONS ================= -->
     <section aria-labelledby="editions-title">
       <div class="shell">
-        <p class="eyebrow">Editions</p>
-        <h2 id="editions-title">Complete core, open by default</h2>
+        <h2 id="editions-title">Free to run, open to read</h2>
+        <p class="section-lede">The Community Edition is the complete core, not a demo. Enterprise adds what larger organisations need on top of it.</p>
         <div class="editions">
           <div class="edition">
             <h3>Community</h3>
-            <span class="tag">AGPL-3.0 · github.com/EaseIT-cz/vornik</span>
-            <p>The complete orchestration core — daemon, agents, memory/RAG,
-            workflows, Web UI, CLI, companion plugin. Fully usable on its own
-            for personal and small-team work.</p>
+            <span class="tag">AGPL-3.0, on GitHub</span>
+            <p>Daemon, agents, memory, workflows, web UI, CLI and the coding-agent plugins. Fully usable for personal and small-team work.</p>
             <a href="https://github.com/EaseIT-cz/vornik">Source on GitHub</a>
           </div>
           <div class="edition">
             <h3>Enterprise</h3>
-            <span class="tag">proprietary · same core</span>
-            <p>Advanced capabilities on top of the Community core for
-            organizations — packaged, supported, and built on the same
-            daemon you can read the source of.</p>
-            <a href="https://docs.vornik.io/editions/">Feature matrix</a>
+            <span class="tag">Commercial licence, same core</span>
+            <p>Clustering, single sign-on, an admin suite, replay of past runs and commercial support, built on the daemon you can read.</p>
+            <a href="https://docs.vornik.io/editions/">Compare editions</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= FINAL CTA ================= -->
+    <section class="final" aria-labelledby="final-title">
+      <div class="shell">
+        <h2 id="final-title">Install Vornik in one prompt</h2>
+        <p class="section-lede">Hand it to your coding agent now. In a few minutes you'll have a working daemon, a first finished task, and an agent that remembers.</p>
+        <div class="install" data-install>
+          <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
+            <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
+            <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
+          </div>
+          <div class="install-body">
+            <div class="install-row">
+              <p class="install-cmd" data-cmd>Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
+              <button class="btn btn-primary install-copy" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <span data-copy-label>Copy prompt</span>
+              </button>
+            </div>
+            <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.</p>
+          </div>
+        </div>
+        <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Free and open source. Linux and macOS. No account, no cloud sign-up.</p>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="shell foot-row">
-      <span>Agent swarms that you own · Open core · AGPL-3.0</span>
+      <span>Agent swarms that you own. Open core, AGPL-3.0.</span>
       <span class="foot-links">
         <a href="https://docs.vornik.io">Docs</a>
         <a href="https://github.com/EaseIT-cz/vornik/blob/main/AGENTS.md">AGENTS.md</a>
@@ -501,9 +643,8 @@
   </footer>
 
   <script>
-    // Theme toggle — progressive enhancement. The page already resolves
-    // light/dark from prefers-color-scheme with no JS; this lets a visitor
-    // pin the other one, persisted across visits.
+    // Theme toggle: the page resolves light/dark from prefers-color-scheme
+    // with no JS; this lets a visitor pin the other one.
     (function () {
       var root = document.documentElement;
       try {
@@ -511,77 +652,114 @@
         if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
       } catch (e) {}
       var btn = document.getElementById('theme-toggle');
-      if (btn) {
-        btn.addEventListener('click', function () {
-          // Resolve the currently-shown theme, then flip it.
-          var current = root.getAttribute('data-theme');
-          if (!current) {
-            current = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-          }
-          var next = current === 'dark' ? 'light' : 'dark';
-          root.setAttribute('data-theme', next);
-          try { localStorage.setItem('vornik:theme', next); } catch (e) {}
-        });
-      }
+      if (btn) btn.addEventListener('click', function () {
+        var current = root.getAttribute('data-theme');
+        if (!current) current = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        var next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('vornik:theme', next); } catch (e) {}
+      });
     })();
 
-    document.querySelectorAll('.copy-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var el = document.getElementById(btn.dataset.copy);
-        var text = el.textContent.trim();
-        navigator.clipboard.writeText(text).then(function () {
-          btn.textContent = 'copied';
-          setTimeout(function () { btn.textContent = 'copy'; }, 1600);
-        }, function () {
-          var r = document.createRange();
-          r.selectNodeContents(el);
-          var sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(r);
-        });
-      });
-    });
-
-    // Install-method select: one copy/paste window, swap content by mode.
-    // Linux and macOS run the SAME command — get.vornik.io detects the OS
-    // in-script (macOS provisions a Lima Linux VM to preserve zero-egress).
+    // Install widgets: two instances (hero + final), kept in sync.
+    // Linux and macOS run the same command; get.vornik.io detects the OS
+    // (macOS provisions a Lima Linux VM so agent isolation is preserved).
     (function () {
-      var sel = document.getElementById('install-mode');
-      var cmd = document.getElementById('install-cmd');
-      var note = document.getElementById('install-note');
-      if (!sel || !cmd || !note) return;
       var MODES = {
         agent: {
-          cls: 'prompt-text',
           html: 'Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span>',
-          note: 'Paste into Claude Code, Codex, Gemini CLI, or any coding agent with shell access. <a href="https://agents.vornik.io">AGENTS.md</a> is a runbook it can execute and verify — install, LLM key, first task, and its own persistent memory on your Vornik. It asks you before anything privileged.'
+          label: 'Copy prompt',
+          note: 'Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.'
         },
-        linux: {
-          cls: 'shell-line',
-          html: 'curl -fsSL https://get.vornik.io | bash',
-          note: 'Linux with rootless Podman. Builds the daemon, starts PostgreSQL + pgvector, and installs a user service — then a first-run guide at <code>/ui/setup</code> connects your LLM. Pins a release tag, not <code>main</code>. Prefer to check the script first? <a href="https://docs.vornik.io/getting-started/">Verify its checksum</a>.'
-        },
-        mac: {
-          cls: 'shell-line',
-          html: 'curl -fsSL https://get.vornik.io | bash',
-          note: 'macOS — the <strong>same command</strong>; the script detects your OS. It provisions a small Linux VM (<a href="https://lima-vm.io">Lima</a>) and runs the stack inside it, so zero-egress agent isolation is preserved exactly as on Linux. <a href="https://docs.vornik.io/getting-started/#macos-inside-a-linux-vm">macOS details</a>.'
+        shell: {
+          html: '<span class="prompt-sign">$ </span>curl -fsSL https://get.vornik.io | bash',
+          label: 'Copy command',
+          note: 'Linux with rootless Podman, or macOS (the script sets up a small Linux VM with <a href="https://lima-vm.io">Lima</a>). It installs the daemon, PostgreSQL with pgvector and a user service; a first-run guide at <code>localhost:8080/ui/setup</code> then connects your model. <a href="https://docs.vornik.io/getting-started/">Verify the script first</a>.'
         }
       };
-      sel.addEventListener('change', function () {
-        var m = MODES[sel.value] || MODES.agent;
-        cmd.className = m.cls;
-        cmd.innerHTML = m.html;
-        note.innerHTML = m.note;
+      var widgets = Array.prototype.slice.call(document.querySelectorAll('[data-install]'));
+      function setMode(mode) {
+        var m = MODES[mode] || MODES.agent;
+        widgets.forEach(function (w) {
+          w.querySelectorAll('.install-tab').forEach(function (t) {
+            t.setAttribute('aria-selected', t.dataset.mode === mode ? 'true' : 'false');
+          });
+          w.querySelector('[data-cmd]').innerHTML = m.html;
+          w.querySelector('[data-note]').innerHTML = m.note;
+          w.querySelector('[data-copy-label]').textContent = m.label;
+          w.dataset.mode = mode;
+        });
+      }
+      widgets.forEach(function (w) {
+        w.dataset.mode = 'agent';
+        w.querySelectorAll('.install-tab').forEach(function (t) {
+          t.addEventListener('click', function () { setMode(t.dataset.mode); });
+        });
+        var btn = w.querySelector('[data-copy]');
+        btn.addEventListener('click', function () {
+          var el = w.querySelector('[data-cmd]');
+          var text = el.textContent.replace(/^\$\s*/, '').trim();
+          var label = btn.querySelector('[data-copy-label]');
+          var orig = (MODES[w.dataset.mode] || MODES.agent).label;
+          function reset(ms) { setTimeout(function () { label.textContent = orig; }, ms); }
+          function fallback() {
+            var r = document.createRange(); r.selectNodeContents(el);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            label.textContent = 'Press Ctrl+C'; reset(2400);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { label.textContent = 'Copied'; reset(1800); }, fallback);
+          } else { fallback(); }
+        });
       });
     })();
+
+    // Use-case console: each tab replays its run; the green "done" signal
+    // lights when the last line lands.
     (function () {
-      var t = document.querySelector('.transcript.pending');
+      var consoleEl = document.getElementById('console');
+      if (!consoleEl) return;
+      var tabs = Array.prototype.slice.call(consoleEl.querySelectorAll('[role="tab"]'));
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var timer;
+      function replay(panel) {
+        var body = panel.querySelector('.console-body');
+        consoleEl.classList.remove('finished');
+        clearTimeout(timer);
+        if (reduce) { consoleEl.classList.add('finished'); return; }
+        body.classList.remove('play'); void body.offsetWidth; body.classList.add('play');
+        var n = body.querySelectorAll('p').length;
+        timer = setTimeout(function () { consoleEl.classList.add('finished'); }, (n - 1) * 550 + 600);
+      }
+      function select(tab, focus) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+        if (focus) tab.focus();
+        replay(document.getElementById(tab.getAttribute('aria-controls')));
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { select(t); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            select(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+          }
+        });
+      });
+      replay(document.getElementById('panel-auto'));
+    })();
+
+    // Setup transcript plays once it scrolls into view.
+    (function () {
+      var t = document.getElementById('setup-play');
       if (!t) return;
-      if (!('IntersectionObserver' in window)) { t.classList.remove('pending'); return; }
+      if (!('IntersectionObserver' in window)) { t.classList.remove('paused'); return; }
       var io = new IntersectionObserver(function (entries) {
-        if (entries.some(function (e) { return e.isIntersecting; })) {
-          t.classList.remove('pending'); io.disconnect();
-        }
+        if (entries.some(function (e) { return e.isIntersecting; })) { t.classList.remove('paused'); io.disconnect(); }
       }, { threshold: 0.35 });
       io.observe(t);
     })();
