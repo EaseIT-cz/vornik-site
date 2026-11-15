@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vornik — agent swarms that you own</title>
+  <title>Vornik — build agent swarms that you own</title>
   <meta name="description" content="Vornik runs AI agent teams on your own machine. Use it for autonomous work that runs while you're away, or to give your coding agent memory, skills and a team. Install it by handing one prompt to your coding agent.">
   <meta property="og:title" content="Vornik — agent swarms that you own">
   <meta property="og:description" content="Autonomous AI work and assisted coding on one self-hosted daemon. Install it by handing one prompt to your coding agent.">
@@ -151,10 +151,8 @@
     :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
     /* ---------- hero ---------- */
-    .hero {
-      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 56px; align-items: center; padding: 72px 0 80px;
-    }
+    .hero { text-align: center; padding: 84px 0 92px; }
+    .hero .install { max-width: 780px; margin: 0 auto; text-align: left; }
     .eyebrow {
       font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--muted); margin: 0;
@@ -165,7 +163,8 @@
       line-height: 1.02; letter-spacing: -0.02em; margin: 14px 0 20px;
     }
     h1 .accent { color: var(--accent); }
-    .lede { color: var(--muted); font-size: 1.12rem; max-width: 32em; margin: 0 0 30px; }
+    .hero h1 { font-size: clamp(2.6rem, 6.6vw, 5rem); margin: 14px auto 20px; max-width: 14em; }
+    .lede { color: var(--muted); font-size: 1.15rem; max-width: 34em; margin: 0 auto 34px; }
     .lede strong { color: var(--ink); font-weight: 600; }
 
     /* ---------- install widget ---------- */
@@ -200,7 +199,6 @@
       display: inline-block; width: 7px; height: 7px; border-radius: 50%;
       background: var(--ok); margin-right: 8px; vertical-align: 1px;
     }
-    .hero-links { margin: 18px 0 0; font-size: 0.95rem; display: flex; gap: 22px; flex-wrap: wrap; }
 
     /* ---------- use-case console (the signature) ---------- */
     .console {
@@ -231,6 +229,16 @@
     .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.35; transition: opacity 0.3s; }
     .console-head .done::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
     .console.finished .console-head .done { opacity: 1; color: var(--ok); }
+    .panel { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+    .panel-copy { padding: 30px 32px; background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+    .panel-copy p { margin: 0 0 18px; color: var(--muted); font-size: 1.02rem; }
+    .panel-copy ul { list-style: none; padding: 0; margin: 0 0 22px; }
+    .panel-copy li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 0.97rem; }
+    .panel-copy li:last-child { border-bottom: 1px solid var(--line); }
+    .panel-copy li::before { content: ""; position: absolute; left: 2px; top: 1.1em; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+    .panel-copy .connects { margin: auto 0 0; font-size: 0.88rem; }
+    .panel-copy .connects strong { color: var(--ink); font-weight: 600; }
+    .panel-term { min-width: 0; }
     .console-body {
       padding: 16px 18px 20px; min-height: 300px;
       font-family: var(--mono); font-size: 0.84rem; line-height: 1.7;
@@ -242,11 +250,6 @@
     .t-ok   { color: var(--ok); }
     .t-ask  { color: var(--ink); }
     .t-ask b { color: var(--accent); font-weight: 400; }
-    .console-foot {
-      border-top: 1px solid var(--line); padding: 12px 18px;
-      font-size: 0.88rem; color: var(--muted); background: var(--panel);
-    }
-    .console-foot strong { color: var(--ink); font-weight: 600; }
     .console [role="tabpanel"][hidden] { display: none; }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -263,27 +266,6 @@
       letter-spacing: -0.015em; margin: 0 0 14px; max-width: 22em;
     }
     .section-lede { color: var(--muted); font-size: 1.08rem; max-width: 38em; margin: 0 0 44px; }
-
-    /* two ways to work */
-    .ways { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-    .way { padding: 34px 34px 32px; background: var(--panel); display: flex; flex-direction: column; }
-    .way + .way { border-left: 1px solid var(--line); }
-    .way h3 {
-      font-family: var(--display); font-weight: 600; font-size: 1.5rem;
-      margin: 0 0 10px; display: flex; align-items: center; gap: 12px;
-    }
-    .way h3 .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--mark-agent); flex: none; }
-    .way > p { color: var(--muted); margin: 0 0 22px; max-width: 34em; }
-    .way h4 { font-family: var(--body); font-size: 0.92rem; font-weight: 700; margin: 0 0 10px; }
-    .way ul { list-style: none; padding: 0; margin: 0 0 26px; }
-    .way li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 0.97rem; }
-    .way li:last-child { border-bottom: 1px solid var(--line); }
-    .way li::before {
-      content: ""; position: absolute; left: 2px; top: 1.1em;
-      width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
-    }
-    .way .connects { margin: auto 0 0; font-size: 0.88rem; color: var(--muted); }
-    .way .connects strong { color: var(--ink); font-weight: 600; }
 
     /* install steps */
     .steps-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
@@ -326,7 +308,7 @@
     .edition { border: 1px solid var(--line); border-radius: 12px; padding: 26px 28px; background: var(--panel); }
     .edition h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; margin: 0 0 4px; }
     .edition .tag { font-size: 0.85rem; color: var(--muted); }
-    .edition p { color: var(--muted); font-size: 0.95rem; margin: 12px 0 16px; }
+    .edition p { color: var(--muted); font-size: 0.95rem; margin: 12px 0 0; }
 
     /* final CTA */
     section.final { text-align: center; padding: 104px 0 112px; }
@@ -342,7 +324,7 @@
 
     /* ---------- responsive ---------- */
     @media (max-width: 960px) {
-      .hero { grid-template-columns: 1fr; gap: 44px; padding: 48px 0 60px; }
+      .hero { padding: 52px 0 60px; }
       .steps-grid { grid-template-columns: 1fr; gap: 36px; }
       .core { grid-template-columns: 1fr 1fr; }
       .core > div, .core > div:not(:nth-child(3n+1)) { padding: 24px 22px 24px 0; border-left: 0; }
@@ -350,9 +332,9 @@
     }
     @media (max-width: 760px) {
       .nav-links { display: none; }
-      .ways, .editions { grid-template-columns: 1fr; }
-      .way + .way { border-left: 0; border-top: 1px solid var(--line); }
-      .way { padding: 26px 22px; }
+      .editions { grid-template-columns: 1fr; }
+      .panel { grid-template-columns: 1fr; }
+      .panel-copy { border-right: 0; border-bottom: 1px solid var(--line); padding: 24px 22px; }
       section { padding: 64px 0; }
       section.final { padding: 72px 0 80px; }
     }
@@ -392,117 +374,100 @@
 
   <main>
     <!-- ================= HERO ================= -->
-    <div class="shell hero">
-      <div id="install">
-        <p class="eyebrow">Boosts your agents with RAG, skills, workflows and more</p>
-        <h1 id="hero-title">Agent swarms that <span class="accent">you own</span>.</h1>
-        <p class="lede">
-          One daemon on your own machine, two ways to use it: teams of agents
-          that work while you're away, and memory and a team for the coding
-          agent you already use. <strong>Your agents. Your servers. Your rules.</strong>
-        </p>
+    <div class="shell hero" id="install">
+      <p class="eyebrow">Boosts your agents with RAG, skills, workflows and more</p>
+      <h1 id="hero-title"><span class="accent">Build</span> agent swarms that <span class="accent">you own</span>.</h1>
+      <p class="lede">One self-hosted daemon. Your agents, your servers, your rules.</p>
 
-        <div class="install" data-install>
-          <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
-            <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
-            <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
-          </div>
-          <div class="install-body">
-            <div class="install-row">
-              <p class="install-cmd" data-cmd>Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
-              <button class="btn btn-primary install-copy" type="button" data-copy>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                <span data-copy-label>Copy prompt</span>
-              </button>
-            </div>
-            <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.</p>
-          </div>
+      <div class="install" data-install>
+        <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
+          <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
+          <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
         </div>
-        <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Free and open source. Linux and macOS. No account, no cloud sign-up.</p>
-        <p class="hero-links">
-          <a href="https://docs.vornik.io/getting-started/">Read the getting-started guide</a>
-          <a href="https://github.com/EaseIT-cz/vornik">Browse the source on GitHub</a>
-        </p>
-      </div>
-
-      <div class="console" id="console">
-        <div class="console-switch" role="tablist" aria-label="Use case">
-          <button class="mode" type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="true">
-            <span class="dot" aria-hidden="true"></span>
-            <span>Autonomous AI<small>work that runs without you</small></span>
-          </button>
-          <button class="mode" type="button" role="tab" id="tab-code" aria-controls="panel-code" aria-selected="false" tabindex="-1">
-            <span class="dot" aria-hidden="true"></span>
-            <span>Assisted coding<small>your coding agent, upgraded</small></span>
-          </button>
-        </div>
-
-        <div role="tabpanel" id="panel-auto" aria-labelledby="tab-auto">
-          <div class="console-head"><span>vornik · repo maintenance</span><span class="done">done</span></div>
-          <div class="console-body play" aria-hidden="true">
-            <p class="t-in"  style="--i:0">▸ GitHub: issue #142 labelled "bug"</p>
-            <p class="t-out" style="--i:1">  forge       task queued for the dev team</p>
-            <p class="t-cmd" style="--i:2">  researcher  reads the code and project memory</p>
-            <p class="t-cmd" style="--i:3">  developer   writes the fix, tests pass</p>
-            <p class="t-cmd" style="--i:4">  reviewer    checks the diff and CI</p>
-            <p class="t-ok"  style="--i:5">  ok  pull request #143 opened</p>
-            <p class="t-in"  style="--i:6">▸ 08:00 every weekday: inbox digest</p>
-            <p class="t-ask" style="--i:7">  needs you   send the refund request? <b>approved on phone</b></p>
-            <p class="t-ok"  style="--i:8">  ok  digest sent to Telegram</p>
+        <div class="install-body">
+          <div class="install-row">
+            <p class="install-cmd" data-cmd>Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span></p>
+            <button class="btn btn-primary install-copy" type="button" data-copy>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              <span data-copy-label>Copy prompt</span>
+            </button>
           </div>
-          <p class="sr-only">Example: a labelled GitHub issue starts a task; researcher, developer and reviewer agents fix it and open a pull request. A weekday schedule runs an inbox digest, asks for approval on the phone before sending an email, and delivers the summary to Telegram.</p>
-          <div class="console-foot">Started by <strong>schedules, webhooks and Forge events</strong>. Pauses only where you asked for approval.</div>
-        </div>
-
-        <div role="tabpanel" id="panel-code" aria-labelledby="tab-code" hidden>
-          <div class="console-head"><span>claude code · with vornik</span><span class="done">done</span></div>
-          <div class="console-body play" aria-hidden="true">
-            <p class="t-in"  style="--i:0">&gt; fix the flaky scheduler test</p>
-            <p class="t-cmd" style="--i:1">  recall "scheduler lease design"</p>
-            <p class="t-out" style="--i:2">  3 notes found, incl. why leases expire</p>
-            <p class="t-cmd" style="--i:3">  edit internal/scheduler/lease.go, tests pass</p>
-            <p class="t-cmd" style="--i:4">  delegate architectural-review</p>
-            <p class="t-out" style="--i:5">  queued on Vornik, keeps coding meanwhile</p>
-            <p class="t-ok"  style="--i:6">  ok  review came back green, 0 findings</p>
-            <p class="t-cmd" style="--i:7">  remember "root cause: clock skew on renewal"</p>
-            <p class="t-ok"  style="--i:8">  ok  stored for the next session</p>
-          </div>
-          <p class="sr-only">Example: in Claude Code, the agent recalls prior design notes from Vornik memory, makes a fix, delegates an architectural review to Vornik while it keeps working, gets a green review back, and stores the root cause for the next session.</p>
-          <div class="console-foot">Works with <strong>Claude Code, Codex and Hermes</strong>. Memory and skills carry across sessions and machines.</div>
+          <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access.</p>
         </div>
       </div>
+      <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Free and open source. Linux and macOS. No account, no cloud sign-up.</p>
     </div>
 
     <!-- ================= TWO WAYS ================= -->
     <section id="use-cases" aria-labelledby="ways-title">
       <div class="shell">
         <h2 id="ways-title">One install, two ways to work</h2>
-        <p class="section-lede">Vornik is a general-purpose engine for agent teams. Most people start with one of these and end up using both, on the same daemon, with the same memory.</p>
-        <div class="ways">
-          <article class="way">
-            <h3><span class="dot" aria-hidden="true"></span>Autonomous AI</h3>
-            <p>Start work from a goal, a schedule, a signed webhook or a Forge event, and teams of specialist agents carry it out in isolated containers as one stage of your wider pipeline, pausing only where you have asked for approval.</p>
-            <h4>People use it to</h4>
-            <ul>
-              <li>Review every pull request and open fixes for labelled issues</li>
-              <li>Watch an inbox, turn dates into calendar drafts, and get a summary on Sunday</li>
-              <li>Research a topic overnight and publish a report they can share</li>
-              <li>Hand work from one project to another, or to any agent that speaks A2A</li>
-            </ul>
-            <p class="connects">Talk to it from <strong>Telegram, email or the web UI</strong>. Approve sensitive steps on your phone.</p>
-          </article>
-          <article class="way">
-            <h3><span class="dot" aria-hidden="true"></span>Assisted coding</h3>
-            <p>Connect Claude Code, Codex or Hermes and your coding agent gets persistent project memory, shared knowledge skills, and a team it can hand reviews, research and ingests to while it keeps working.</p>
-            <h4>People use it to</h4>
-            <ul>
-              <li>Recall why code is built the way it is before changing it</li>
-              <li>Get an architectural review after each commit without waiting for it</li>
-              <li>Turn a fix they worked out once into a skill every future session gets</li>
-              <li>Keep what one machine learned available on every other machine</li>
-            </ul>
-            <p class="connects">Installs as a <strong>plugin for Claude Code and Codex</strong>; any other CLI can use the same memory over plain HTTP.</p>
-          </article>
+        <p class="section-lede">Most people start with one and end up using both, on the same daemon and memory.</p>
+        <div class="console" id="console">
+          <div class="console-switch" role="tablist" aria-label="Use case">
+            <button class="mode" type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="true">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Autonomous AI<small>work that runs without you</small></span>
+            </button>
+            <button class="mode" type="button" role="tab" id="tab-code" aria-controls="panel-code" aria-selected="false" tabindex="-1">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Assisted coding<small>your coding agent, upgraded</small></span>
+            </button>
+          </div>
+
+          <div class="panel" role="tabpanel" id="panel-auto" aria-labelledby="tab-auto">
+            <div class="panel-copy">
+              <p>Teams of agents start from a goal, schedule, webhook or Forge event, and pause only where you ask for approval.</p>
+              <ul>
+                <li>Review every pull request, fix labelled issues</li>
+                <li>Watch an inbox, draft calendar events</li>
+                <li>Research overnight, publish a report</li>
+              </ul>
+              <p class="connects">Talk to it from <strong>Telegram, email or the web UI</strong>.</p>
+            </div>
+            <div class="panel-term">
+              <div class="console-head"><span>vornik · repo maintenance</span><span class="done">done</span></div>
+              <div class="console-body play" aria-hidden="true">
+                <p class="t-in"  style="--i:0">▸ GitHub: issue #142 labelled "bug"</p>
+                <p class="t-out" style="--i:1">  forge       task queued for the dev team</p>
+                <p class="t-cmd" style="--i:2">  researcher  reads the code and project memory</p>
+                <p class="t-cmd" style="--i:3">  developer   writes the fix, tests pass</p>
+                <p class="t-cmd" style="--i:4">  reviewer    checks the diff and CI</p>
+                <p class="t-ok"  style="--i:5">  ok  pull request #143 opened</p>
+                <p class="t-in"  style="--i:6">▸ 08:00 every weekday: inbox digest</p>
+                <p class="t-ask" style="--i:7">  needs you   send the refund request? <b>approved on phone</b></p>
+                <p class="t-ok"  style="--i:8">  ok  digest sent to Telegram</p>
+              </div>
+              <p class="sr-only">Example: a labelled GitHub issue starts a task; researcher, developer and reviewer agents fix it and open a pull request. A weekday schedule runs an inbox digest, asks for approval on the phone before sending an email, and delivers the summary to Telegram.</p>
+            </div>
+          </div>
+
+          <div class="panel" role="tabpanel" id="panel-code" aria-labelledby="tab-code" hidden>
+            <div class="panel-copy">
+              <p>Your coding agent gets persistent project memory, shared skills, and a team to hand reviews and research to while it keeps working.</p>
+              <ul>
+                <li>Recall why code is built the way it is</li>
+                <li>Get a review after each commit</li>
+                <li>Turn a one-off fix into a skill for every session</li>
+              </ul>
+              <p class="connects">Plugin for <strong>Claude Code and Codex</strong>; any CLI works over HTTP.</p>
+            </div>
+            <div class="panel-term">
+              <div class="console-head"><span>claude code · with vornik</span><span class="done">done</span></div>
+              <div class="console-body play" aria-hidden="true">
+                <p class="t-in"  style="--i:0">&gt; fix the flaky scheduler test</p>
+                <p class="t-cmd" style="--i:1">  recall "scheduler lease design"</p>
+                <p class="t-out" style="--i:2">  3 notes found, incl. why leases expire</p>
+                <p class="t-cmd" style="--i:3">  edit internal/scheduler/lease.go, tests pass</p>
+                <p class="t-cmd" style="--i:4">  delegate architectural-review</p>
+                <p class="t-out" style="--i:5">  queued on Vornik, keeps coding meanwhile</p>
+                <p class="t-ok"  style="--i:6">  ok  review came back green, 0 findings</p>
+                <p class="t-cmd" style="--i:7">  remember "root cause: clock skew on renewal"</p>
+                <p class="t-ok"  style="--i:8">  ok  stored for the next session</p>
+              </div>
+              <p class="sr-only">Example: in Claude Code, the agent recalls prior design notes from Vornik memory, makes a fix, delegates an architectural review to Vornik while it keeps working, gets a green review back, and stores the root cause for the next session.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -512,22 +477,22 @@
       <div class="shell steps-grid">
         <div>
           <h2 id="steps-title">Your coding agent does the install</h2>
-          <p class="section-lede">The runbook at agents.vornik.io is written for agents: every step is a command plus a check it can verify. You stay in charge of anything privileged.</p>
+          <p class="section-lede">The runbook at agents.vornik.io is written for agents. You approve anything privileged.</p>
           <ol class="steps">
             <li>
               <h3>Paste one prompt</h3>
-              <p>Copy the prompt above into Claude Code, Codex, Gemini CLI or any agent with a shell.</p>
+              <p>Into Claude Code, Codex or any agent with a shell.</p>
             </li>
             <li>
               <h3>It installs and checks itself</h3>
-              <p>Vornik, PostgreSQL with pgvector and a user service, then your model key and a first task that has to complete.</p>
+              <p>Daemon, database, your model key, and a first task that must complete.</p>
             </li>
             <li>
               <h3>It wires itself in</h3>
-              <p>Your agent gets its own project and memory on your Vornik, so the next session starts knowing what this one learned.</p>
+              <p>Your agent gets its own project and memory for next time.</p>
             </li>
           </ol>
-          <a class="btn btn-primary" href="#install">Copy the install prompt</a>
+          <a class="btn btn-primary" href="#install">Install Vornik</a>
         </div>
 
         <div class="transcript" role="img" aria-label="A coding agent installing Vornik: it runs the installer, verifies readiness, submits a first task that completes, and confirms its memory round-trip.">
@@ -552,31 +517,31 @@
     <section aria-labelledby="core-title">
       <div class="shell">
         <h2 id="core-title">The same core under both</h2>
-        <p class="section-lede">Whichever way you use it, the work runs on one host you control, and every result is kept.</p>
+        <p class="section-lede">One host you control, and every result is kept.</p>
         <div class="core">
           <div>
             <h3>Runs on your machine</h3>
-            <p>A home server, a mini-PC or a rented box. Linux with rootless Podman; on macOS it runs inside a small Linux VM.</p>
+            <p>A home server, mini-PC or rented box. Linux or macOS.</p>
           </div>
           <div>
             <h3>Any model you choose</h3>
-            <p>Self-hosted open-weight models or any OpenAI-compatible provider, picked per role.</p>
+            <p>Open-weight or OpenAI-compatible, picked per role.</p>
           </div>
           <div>
             <h3>Isolated agents</h3>
-            <p>Each agent runs in its own container. Roles can run with no network at all, reaching tools only through the daemon.</p>
+            <p>Every agent in its own container, optionally with no network.</p>
           </div>
           <div>
             <h3>Memory that persists</h3>
-            <p>Every project keeps its own searchable memory, so agents and coding sessions build on earlier work.</p>
+            <p>Searchable per-project memory that builds on earlier work.</p>
           </div>
           <div>
             <h3>You approve what matters</h3>
-            <p>Approval gates where you want them, answered on your paired phone. Credentials are entered there, never in chat.</p>
+            <p>Approval gates, answered on your paired phone.</p>
           </div>
           <div>
             <h3>Work survives restarts</h3>
-            <p>Tasks are leased, not fired and forgotten. A crash or a reboot puts the work back in the queue.</p>
+            <p>A crash or reboot puts the work back in the queue.</p>
           </div>
         </div>
       </div>
@@ -586,19 +551,17 @@
     <section aria-labelledby="editions-title">
       <div class="shell">
         <h2 id="editions-title">Free to run, open to read</h2>
-        <p class="section-lede">The Community Edition is the complete core, not a demo. Enterprise adds what larger organisations need on top of it.</p>
+        <p class="section-lede">Community is the complete core, not a demo.</p>
         <div class="editions">
           <div class="edition">
             <h3>Community</h3>
             <span class="tag">AGPL-3.0, on GitHub</span>
-            <p>Daemon, agents, memory, workflows, web UI, CLI and the coding-agent plugins. Fully usable for personal and small-team work.</p>
-            <a href="https://github.com/EaseIT-cz/vornik">Source on GitHub</a>
+            <p>Daemon, agents, memory, workflows, web UI, CLI and plugins.</p>
           </div>
           <div class="edition">
             <h3>Enterprise</h3>
             <span class="tag">Commercial licence, same core</span>
-            <p>Clustering, single sign-on, an admin suite, replay of past runs and commercial support, built on the daemon you can read.</p>
-            <a href="https://docs.vornik.io/editions/">Compare editions</a>
+            <p>Clustering, SSO, admin suite and commercial support on the same core.</p>
           </div>
         </div>
       </div>
@@ -608,7 +571,7 @@
     <section class="final" aria-labelledby="final-title">
       <div class="shell">
         <h2 id="final-title">Install Vornik in one prompt</h2>
-        <p class="section-lede">Hand it to your coding agent now. In a few minutes you'll have a working daemon, a first finished task, and an agent that remembers.</p>
+        <p class="section-lede">A working daemon, a finished first task and an agent that remembers, in minutes.</p>
         <div class="install" data-install>
           <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
             <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
@@ -622,7 +585,7 @@
                 <span data-copy-label>Copy prompt</span>
               </button>
             </div>
-            <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.</p>
+            <p class="install-note" data-note>Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access.</p>
           </div>
         </div>
         <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Free and open source. Linux and macOS. No account, no cloud sign-up.</p>
@@ -669,7 +632,7 @@
         agent: {
           html: 'Set up Vornik for me. Follow the runbook at <span class="url">https://agents.vornik.io</span>',
           label: 'Copy prompt',
-          note: 'Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access. It installs Vornik, connects your model, runs a first task and checks that it worked, asking you before anything privileged.'
+          note: 'Paste it into Claude Code, Codex, Gemini CLI or any coding agent with shell access.'
         },
         shell: {
           html: '<span class="prompt-sign">$ </span>curl -fsSL https://get.vornik.io | bash',
