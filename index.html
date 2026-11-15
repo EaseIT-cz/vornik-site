@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vornik — build agent swarms that you own</title>
   <meta name="description" content="Vornik runs AI agent teams on your own machine. Use it for autonomous work that runs while you're away, or to give your coding agent memory, skills and a team. Install it by handing one prompt to your coding agent.">
-  <meta property="og:title" content="Vornik — agent swarms that you own">
+  <meta property="og:title" content="Vornik — build agent swarms that you own">
   <meta property="og:description" content="Autonomous AI work and assisted coding on one self-hosted daemon. Install it by handing one prompt to your coding agent.">
   <meta property="og:url" content="https://vornik.io">
   <meta property="og:image" content="https://vornik.io/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Vornik — agent swarms that you own">
+  <meta property="og:image:alt" content="Vornik — build agent swarms that you own">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -151,7 +151,7 @@
     :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
     /* ---------- hero ---------- */
-    .hero { text-align: center; padding: 84px 0 92px; }
+    .hero { text-align: center; padding: 36px 0 40px; }
     .hero .install { max-width: 780px; margin: 0 auto; text-align: left; }
     .eyebrow {
       font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
@@ -163,8 +163,8 @@
       line-height: 1.02; letter-spacing: -0.02em; margin: 14px 0 20px;
     }
     h1 .accent { color: var(--accent); }
-    .hero h1 { font-size: clamp(2.6rem, 6.6vw, 5rem); margin: 14px auto 20px; max-width: 14em; }
-    .lede { color: var(--muted); font-size: 1.15rem; max-width: 34em; margin: 0 auto 34px; }
+    .hero h1 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); margin: 10px auto 14px; max-width: 18em; }
+    .lede { color: var(--muted); font-size: 1.15rem; max-width: 34em; margin: 0 auto 24px; }
     .lede strong { color: var(--ink); font-weight: 600; }
 
     /* ---------- install widget ---------- */
@@ -181,8 +181,8 @@
       color: var(--muted); cursor: pointer;
     }
     .install-tab:hover { color: var(--ink); }
-    .install-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-    .install-body { padding: 18px 18px 16px; }
+    .install-tab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+    .install-body { padding: 16px 18px 14px; }
     .install-row { display: flex; align-items: flex-start; gap: 14px; }
     .install-cmd {
       flex: 1 1 auto; min-width: 0; margin: 0;
@@ -194,7 +194,7 @@
     .install-note { margin: 12px 0 0; font-size: 0.86rem; color: var(--muted); line-height: 1.55; }
     .install-note code { font-family: var(--mono); font-size: 0.9em; }
     .install-copy { min-width: 136px; }
-    .reassure { margin: 14px 0 0; font-size: 0.88rem; color: var(--muted); }
+    .reassure { margin: 12px 0 0; font-size: 0.88rem; color: var(--muted); }
     .reassure .ok-dot {
       display: inline-block; width: 7px; height: 7px; border-radius: 50%;
       background: var(--ok); margin-right: 8px; vertical-align: 1px;
@@ -226,7 +226,7 @@
       padding: 10px 18px; border-bottom: 1px solid var(--line);
       font-family: var(--mono); font-size: 0.76rem; color: var(--muted);
     }
-    .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.35; transition: opacity 0.3s; }
+    .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.6; transition: opacity 0.3s; }
     .console-head .done::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
     .console.finished .console-head .done { opacity: 1; color: var(--ok); }
     .panel { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
@@ -259,13 +259,13 @@
     }
 
     /* ---------- sections ---------- */
-    section { padding: 88px 0; border-top: 1px solid var(--line); }
+    section { padding: 60px 0; border-top: 1px solid var(--line); }
     h2 {
       font-family: var(--display); font-weight: 600;
       font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.1;
       letter-spacing: -0.015em; margin: 0 0 14px; max-width: 22em;
     }
-    .section-lede { color: var(--muted); font-size: 1.08rem; max-width: 38em; margin: 0 0 44px; }
+    .section-lede { color: var(--muted); font-size: 1.08rem; max-width: 38em; margin: 0 0 28px; }
 
     /* install steps */
     .steps-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
@@ -311,7 +311,7 @@
     .edition p { color: var(--muted); font-size: 0.95rem; margin: 12px 0 0; }
 
     /* final CTA */
-    section.final { text-align: center; padding: 104px 0 112px; }
+    section.final { text-align: center; padding: 72px 0 80px; }
     .final h2 { margin: 0 auto 14px; }
     .final .section-lede { margin: 0 auto 34px; }
     .final .install { max-width: 720px; margin: 0 auto; text-align: left; }
@@ -331,12 +331,13 @@
       .core > div:nth-child(2n) { padding-left: 22px; border-left: 1px solid var(--line); }
     }
     @media (max-width: 760px) {
-      .nav-links { display: none; }
+      .nav-links { gap: 14px; }
+      .nav-links a.opt { display: none; }
       .editions { grid-template-columns: 1fr; }
       .panel { grid-template-columns: 1fr; }
       .panel-copy { border-right: 0; border-bottom: 1px solid var(--line); padding: 24px 22px; }
-      section { padding: 64px 0; }
-      section.final { padding: 72px 0 80px; }
+      section { padding: 48px 0; }
+      section.final { padding: 56px 0 64px; }
     }
     @media (max-width: 560px) {
       .install-row { flex-direction: column; }
@@ -358,10 +359,10 @@
       </a>
       <span class="nav-right">
         <span class="nav-links">
-          <a href="#use-cases">Use cases</a>
+          <a class="opt" href="#use-cases">Use cases</a>
           <a href="https://docs.vornik.io">Docs</a>
-          <a href="https://github.com/EaseIT-cz/vornik">GitHub</a>
-          <a href="https://docs.vornik.io/editions/">Enterprise</a>
+          <a class="opt" href="https://github.com/EaseIT-cz/vornik">GitHub</a>
+          <a class="opt" href="https://docs.vornik.io/editions/">Enterprise</a>
         </span>
         <a class="btn btn-primary" href="#install">Install</a>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch color theme" title="Switch light / dark">
@@ -375,14 +376,14 @@
   <main>
     <!-- ================= HERO ================= -->
     <div class="shell hero" id="install">
-      <p class="eyebrow">Boosts your agents with RAG, skills, workflows and more</p>
+      <p class="eyebrow">Adds memory, skills and workflows to your agents</p>
       <h1 id="hero-title"><span class="accent">Build</span> agent swarms that <span class="accent">you own</span>.</h1>
       <p class="lede">One self-hosted daemon. Your agents, your servers, your rules.</p>
 
       <div class="install" data-install>
-        <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
-          <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
-          <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
+        <div class="install-tabs" role="group" aria-label="How to install Vornik">
+          <button class="install-tab" type="button" aria-pressed="true" data-mode="agent">With your coding agent</button>
+          <button class="install-tab" type="button" aria-pressed="false" data-mode="shell">In a terminal</button>
         </div>
         <div class="install-body">
           <div class="install-row">
@@ -417,7 +418,7 @@
 
           <div class="panel" role="tabpanel" id="panel-auto" aria-labelledby="tab-auto">
             <div class="panel-copy">
-              <p>Teams of agents start from a goal, schedule, webhook or Forge event, and pause only where you ask for approval.</p>
+              <p>Teams of agents start from a goal, schedule, webhook or GitHub event, and pause only where you ask for approval.</p>
               <ul>
                 <li>Review every pull request, fix labelled issues</li>
                 <li>Watch an inbox, draft calendar events</li>
@@ -573,9 +574,9 @@
         <h2 id="final-title">Install Vornik in one prompt</h2>
         <p class="section-lede">A working daemon, a finished first task and an agent that remembers, in minutes.</p>
         <div class="install" data-install>
-          <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
-            <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
-            <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
+          <div class="install-tabs" role="group" aria-label="How to install Vornik">
+            <button class="install-tab" type="button" aria-pressed="true" data-mode="agent">With your coding agent</button>
+            <button class="install-tab" type="button" aria-pressed="false" data-mode="shell">In a terminal</button>
           </div>
           <div class="install-body">
             <div class="install-row">
@@ -600,7 +601,8 @@
         <a href="https://docs.vornik.io">Docs</a>
         <a href="https://github.com/EaseIT-cz/vornik/blob/main/AGENTS.md">AGENTS.md</a>
         <a href="https://github.com/EaseIT-cz/vornik">GitHub</a>
-        <a href="https://get.vornik.io">get.vornik.io</a>
+        <a href="https://docs.vornik.io/editions/">Enterprise</a>
+        <a href="https://get.vornik.io">Install script</a>
       </span>
     </div>
   </footer>
@@ -645,7 +647,7 @@
         var m = MODES[mode] || MODES.agent;
         widgets.forEach(function (w) {
           w.querySelectorAll('.install-tab').forEach(function (t) {
-            t.setAttribute('aria-selected', t.dataset.mode === mode ? 'true' : 'false');
+            t.setAttribute('aria-pressed', t.dataset.mode === mode ? 'true' : 'false');
           });
           w.querySelector('[data-cmd]').innerHTML = m.html;
           w.querySelector('[data-note]').innerHTML = m.note;
