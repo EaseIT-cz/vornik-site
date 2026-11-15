@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vornik — build agent swarms that you own</title>
   <meta name="description" content="Vornik runs AI agent teams on your own machine. Use it for autonomous work that runs while you're away, or to give your coding agent memory, skills and a team. Install it by handing one prompt to your coding agent.">
-  <meta property="og:title" content="Vornik — agent swarms that you own">
+  <meta property="og:title" content="Vornik — build agent swarms that you own">
   <meta property="og:description" content="Autonomous AI work and assisted coding on one self-hosted daemon. Install it by handing one prompt to your coding agent.">
   <meta property="og:url" content="https://vornik.io">
   <meta property="og:image" content="https://vornik.io/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Vornik — agent swarms that you own">
+  <meta property="og:image:alt" content="Vornik — build agent swarms that you own">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -181,7 +181,7 @@
       color: var(--muted); cursor: pointer;
     }
     .install-tab:hover { color: var(--ink); }
-    .install-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+    .install-tab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
     .install-body { padding: 18px 18px 16px; }
     .install-row { display: flex; align-items: flex-start; gap: 14px; }
     .install-cmd {
@@ -226,7 +226,7 @@
       padding: 10px 18px; border-bottom: 1px solid var(--line);
       font-family: var(--mono); font-size: 0.76rem; color: var(--muted);
     }
-    .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.35; transition: opacity 0.3s; }
+    .console-head .done { display: inline-flex; align-items: center; gap: 8px; opacity: 0.6; transition: opacity 0.3s; }
     .console-head .done::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
     .console.finished .console-head .done { opacity: 1; color: var(--ok); }
     .panel { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
@@ -380,9 +380,9 @@
       <p class="lede">One self-hosted daemon. Your agents, your servers, your rules.</p>
 
       <div class="install" data-install>
-        <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
-          <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
-          <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
+        <div class="install-tabs" role="group" aria-label="How to install Vornik">
+          <button class="install-tab" type="button" aria-pressed="true" data-mode="agent">With your coding agent</button>
+          <button class="install-tab" type="button" aria-pressed="false" data-mode="shell">In a terminal</button>
         </div>
         <div class="install-body">
           <div class="install-row">
@@ -573,9 +573,9 @@
         <h2 id="final-title">Install Vornik in one prompt</h2>
         <p class="section-lede">A working daemon, a finished first task and an agent that remembers, in minutes.</p>
         <div class="install" data-install>
-          <div class="install-tabs" role="tablist" aria-label="How to install Vornik">
-            <button class="install-tab" type="button" role="tab" aria-selected="true" data-mode="agent">With your coding agent</button>
-            <button class="install-tab" type="button" role="tab" aria-selected="false" data-mode="shell">In a terminal</button>
+          <div class="install-tabs" role="group" aria-label="How to install Vornik">
+            <button class="install-tab" type="button" aria-pressed="true" data-mode="agent">With your coding agent</button>
+            <button class="install-tab" type="button" aria-pressed="false" data-mode="shell">In a terminal</button>
           </div>
           <div class="install-body">
             <div class="install-row">
@@ -645,7 +645,7 @@
         var m = MODES[mode] || MODES.agent;
         widgets.forEach(function (w) {
           w.querySelectorAll('.install-tab').forEach(function (t) {
-            t.setAttribute('aria-selected', t.dataset.mode === mode ? 'true' : 'false');
+            t.setAttribute('aria-pressed', t.dataset.mode === mode ? 'true' : 'false');
           });
           w.querySelector('[data-cmd]').innerHTML = m.html;
           w.querySelector('[data-note]').innerHTML = m.note;
