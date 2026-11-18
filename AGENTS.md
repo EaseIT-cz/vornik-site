@@ -22,7 +22,7 @@ Before committing any website change, run:
 ```sh
 python3 scripts/build.py --check
 python3 -m unittest discover -s tests
-node --test tests/language.test.js
+node --test tests/*.test.js
 git diff --check
 ```
 
@@ -44,8 +44,9 @@ base branch before handoff; if shared template/catalog changes conflict, resolve
 the source conflicts first and regenerate HTML. Do not resolve generated-page
 conflicts independently. Check the diff for accidental edits and unrelated work.
 
-Shared RAG notes about this site may use `repo_scope: "*"` so agents working
-from other repositories can find them; label them with
+Shared RAG notes about this site may use `repo_scope: "*"` (the scope visible
+across repositories) so agents working from other repositories can find them;
+label them with
 `github.com/EaseIT-cz/vornik-site` and date them. Verify notes against these
 files. Update RAG when maintenance behavior changes; never record credentials.
 State whether changes are local, pushed, or merged. Do not claim deployment

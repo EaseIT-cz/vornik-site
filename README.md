@@ -11,7 +11,8 @@ Static website for vornik.io. No runtime framework or dependencies required.
   locale URLs always display their language, regardless of that preference.
 - With JavaScript enabled, section anchors and query parameters survive
   language changes. Without JavaScript, the root page displays English and
-  the language links open the selected locale's homepage.
+  the language links open the selected locale's homepage without preserving
+  the query/section or saving a new preference.
 
 Edit `templates/index.html` for shared layout and `locales/en.json` /
 `locales/cs.json` for content. Text is HTML-escaped by default;
@@ -45,5 +46,5 @@ For a local preview: `python3 -m http.server 8000`.
 Start with [AGENTS.md](AGENTS.md) and the detailed
 [maintenance guide](docs/maintaining-the-site.md). The committed files are the
 source of truth; RAG supplies shared context and must be checked against the
-current checkout. The guide lists exactly which edits require generation,
+current checkout. The guide lists which edits require generation,
 how to add a language, the review checks, and what merging deploys.

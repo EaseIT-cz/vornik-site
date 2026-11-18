@@ -16,9 +16,12 @@ in `locales/`, then writes these deployable pages:
 | `cs/index.html` | Czech page at `/cs/`. |
 
 The generator checks catalog key parity, nonempty strings, unresolved tokens
-and balanced HTML tags. `--check` verifies that the committed output matches
-the sources without writing files. It reports failure if any generated page
-is missing or stale. Balanced tags are a limited structural check, not a full
+and balanced HTML tags. `--check` runs the same validation as generation, then
+recomputes each page in memory and compares it with the file in the checkout
+without writing files. It reports failure if a page is missing or stale,
+including direct edits to generated HTML. It does not inspect the Git staging
+area; commit the verified sources and output together.
+Balanced tags are a limited structural check, not a full
 HTML validator or sanitizer; reviewed rich markup still requires care.
 
 The public website never runs Python. These generated pages are committed and
@@ -57,7 +60,7 @@ for generation; Node.js is additionally needed for the JavaScript tests.
    ```sh
    python3 scripts/build.py --check
    python3 -m unittest discover -s tests
-   node --test tests/language.test.js
+   node --test tests/*.test.js
    git diff --check
    ```
 
@@ -76,6 +79,10 @@ for generation; Node.js is additionally needed for the JavaScript tests.
    HTML separately. Inspect the final diff before staging.
 8. Update shared RAG if the structure or maintenance procedure changed.
    Identify this repository, date, branch/commit and whether it is merged.
+   `repo_scope` controls which repository queries can find a note. For shared
+   site maintenance notes, use `repo_scope: "*"` so they can be found across
+   repositories, and identify `github.com/EaseIT-cz/vornik-site` in the text.
+   See `AGENTS.md` for the shared-note convention.
    A companion review supplies findings; verify them before changing code.
 
 ## Translation contexts
@@ -100,9 +107,20 @@ agent installation prompt is translated.
    `scripts/build.py`; this creates `<code>/index.html` during generation.
 3. Add the code to `supported` in `language.js` in the same change.
 4. Add its native-language switch link, `hreflang` alternate, and active-link
-   placeholder to `templates/index.html`. Active-link placeholders use the
-   `current.<code>|html` convention. Keep English as the fallback unless the
-   product's default is deliberately changed.
+   placeholder to `templates/index.html`. The generator injects
+   `current.<code>`; it is not a catalog key. Its value is the raw attribute
+   ` aria-current="page"` (including the leading space) for the current
+   locale, or an empty string otherwise. Use `|html` to retain the attribute
+   syntax, placing the placeholder inside the link's opening tag. For example:
+
+   ```html
+   <a href="/de/" lang="de" hreflang="de" data-language="de"{{current.de|html}}>DE<span class="sr-only"> — Deutsch</span></a>
+   <link rel="alternate" hreflang="de" href="https://vornik.io/de/">
+   ```
+
+   The alternate link belongs in the document head and the switch link in the
+   language controls. Keep English as the fallback unless the product's
+   default is deliberately changed.
 5. Expand tests to include the new locale, its regional browser preference,
    metadata, switch control and explicit choice. Regenerate, preview and
    commit the new generated page along with the updated existing pages.
