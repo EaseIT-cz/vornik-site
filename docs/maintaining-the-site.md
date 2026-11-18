@@ -99,6 +99,17 @@ particular, `Community` and `Enterprise` identify editions. The shell command
 must stay executable and identical between locales; the natural-language
 agent installation prompt is translated.
 
+### Czech editorial style
+
+Write natural Czech for developers rather than translating word for word.
+Retain familiar technical terms such as `skill`/`skills`, `workflow`, `prompt`
+and `review`; do not translate the product's skills as `dovednosti` or its
+workflows as `pracovní postupy`. Use concise Czech around those terms and
+keep the meaning of the English copy. In autonomous-work examples, make it
+clear that agents perform the work. Keep the headline and social metadata
+consistent. Request a companion language review for substantive copy changes
+and verify its suggestions against the actual catalogs before applying them.
+
 ## Adding a language
 
 1. Copy `locales/en.json` to the new language-code filename, translate every
