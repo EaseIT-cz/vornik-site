@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vornik — vytvářejte týmy AI agentů pod vlastní kontrolou</title>
-  <meta name="description" content="Vornik provozuje týmy AI agentů na vašem počítači. Nechte je pracovat samostatně, nebo svému programovacímu agentovi přidejte paměť, dovednosti a tým. K instalaci stačí jeden pokyn pro vašeho agenta.">
-  <meta property="og:title" content="Vornik — vytvářejte týmy AI agentů pod vlastní kontrolou">
-  <meta property="og:description" content="Samostatná práce AI a asistované programování v jedné službě na vašem serveru. K instalaci stačí jeden pokyn pro vašeho programovacího agenta.">
+  <title>Vornik — sestavte si vlastní tým AI agentů</title>
+  <meta name="description" content="Vornik provozuje týmy AI agentů na vašem počítači. Nechte je pracovat samostatně, nebo svému programovacímu agentovi přidejte paměť, skills a tým. K instalaci stačí jeden prompt pro vašeho agenta.">
+  <meta property="og:title" content="Vornik — sestavte si vlastní tým AI agentů">
+  <meta property="og:description" content="Autonomní AI a asistované programování v jedné službě na vašem serveru. K instalaci stačí jeden prompt pro vašeho programovacího agenta.">
   <meta property="og:url" content="https://vornik.io/cs/">
   <meta property="og:locale" content="cs_CZ">
   <link rel="canonical" href="https://vornik.io/cs/">
@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://vornik.io/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Vornik — vytvářejte týmy AI agentů pod vlastní kontrolou">
+  <meta property="og:image:alt" content="Vornik — sestavte si vlastní tým AI agentů">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -413,8 +413,8 @@
   <main>
     <!-- ================= HERO ================= -->
     <div class="shell hero" id="install">
-      <p class="eyebrow">Přidejte svým agentům paměť, dovednosti a pracovní postupy</p>
-      <h1 id="hero-title"><span class="accent">Vytvářejte</span> týmy AI agentů <span class="accent">pod vlastní kontrolou</span>.</h1>
+      <p class="eyebrow">Paměť, skills a workflow pro vaše agenty</p>
+      <h1 id="hero-title"><span class="accent">Sestavte si</span> vlastní tým <span class="accent">AI agentů</span>.</h1>
       <p class="lede">Jedna služba na vašem serveru. Vaši agenti, vaše servery, vaše pravidla.</p>
 
       <div class="install" data-install>
@@ -427,13 +427,13 @@
             <p class="install-cmd" data-cmd>Nainstaluj mi Vornik. Postupuj podle návodu na <span class="url">https://agents.vornik.io</span></p>
             <button class="btn btn-primary install-copy" type="button" data-copy>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-              <span data-copy-label>Kopírovat pokyn</span>
+              <span data-copy-label>Kopírovat prompt</span>
             </button>
           </div>
-          <p class="install-note" data-note>Vložte jej do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu.</p>
+          <p class="install-note" data-note>Vložte prompt do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu.</p>
         </div>
       </div>
-      <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Zdarma a s otevřeným kódem. Linux a macOS. Bez účtu a registrace do cloudu.</p>
+      <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Zdarma a s otevřeným kódem. Linux a macOS. Bez účtu, bez registrace v cloudu.</p>
       <a class="scroll-cue" href="#use-cases">Podívejte se, jak funguje
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </a>
@@ -443,12 +443,12 @@
     <section id="use-cases" aria-labelledby="ways-title">
       <div class="shell">
         <h2 id="ways-title">Jedna instalace, dva způsoby práce</h2>
-        <p class="section-lede">Většina lidí začne jedním a postupně používá oba. Se stejnou službou a společnou pamětí.</p>
+        <p class="section-lede">Většina lidí začne jedním způsobem práce a postupně využívá oba. Službu i paměť mají společnou.</p>
         <div class="console" id="console">
           <div class="console-switch" role="tablist" aria-label="Způsob využití">
             <button class="mode" type="button" role="tab" id="tab-auto" aria-controls="panel-auto" aria-selected="true">
               <span class="dot" aria-hidden="true"></span>
-              <span>Samostatná AI<small>pracuje i bez vás</small></span>
+              <span>Autonomní AI<small>pracuje i bez vás</small></span>
             </button>
             <button class="mode" type="button" role="tab" id="tab-code" aria-controls="panel-code" aria-selected="false" tabindex="-1">
               <span class="dot" aria-hidden="true"></span>
@@ -458,13 +458,13 @@
 
           <div class="panel" role="tabpanel" id="panel-auto" aria-labelledby="tab-auto">
             <div class="panel-copy">
-              <p>Týmy agentů spustí práci podle cíle, plánu, webhooku nebo události na GitHubu. Zastaví se tam, kde vyžadujete schválení.</p>
+              <p>Týmy agentů pracují podle zadaného cíle. Spouští je časový plán, webhook nebo událost na GitHubu. Na schválení čekají jen u kroků, které určíte.</p>
               <ul>
-                <li>Kontrolujte každý pull request a opravujte označené issues</li>
-                <li>Sledujte doručenou poštu a navrhujte události do kalendáře</li>
-                <li>Nechte přes noc zpracovat rešerši a zveřejnit zprávu</li>
+                <li>Agenti kontrolují každý pull request a opravují označené issues</li>
+                <li>Sledují doručenou poštu a navrhují události do kalendáře</li>
+                <li>Přes noc zpracují rešerši a zveřejní zprávu</li>
               </ul>
-              <p class="connects">Komunikujte přes <strong>Telegram, e-mail nebo webové rozhraní</strong>.</p>
+              <p class="connects">S týmem komunikujete přes <strong>Telegram, e-mail nebo webové rozhraní</strong>.</p>
             </div>
             <div class="panel-term">
               <div class="console-head"><span>vornik · údržba repozitáře</span><span class="done">hotovo</span></div>
@@ -476,7 +476,7 @@
                 <p class="t-cmd" style="--i:4">  reviewer    kontroluje změny a CI</p>
                 <p class="t-ok"  style="--i:5">  ok  pull request #143 vytvořen</p>
                 <p class="t-in"  style="--i:6">▸ 08:00 každý pracovní den: přehled pošty</p>
-                <p class="t-ask" style="--i:7">  schválení   odeslat žádost o vrácení peněz? <b>schváleno v telefonu</b></p>
+                <p class="t-ask" style="--i:7">  čeká na vás  odeslat žádost o vrácení peněz? <b>schváleno v telefonu</b></p>
                 <p class="t-ok"  style="--i:8">  ok  přehled odeslán na Telegram</p>
               </div>
               <p class="sr-only">Příklad: označené issue na GitHubu spustí úkol. Agenti pro rešerši, vývoj a kontrolu připraví opravu a vytvoří pull request. Každý pracovní den vznikne přehled pošty, agent si před odesláním e-mailu vyžádá schválení v telefonu a doručí shrnutí na Telegram.</p>
@@ -485,11 +485,11 @@
 
           <div class="panel" role="tabpanel" id="panel-code" aria-labelledby="tab-code" hidden>
             <div class="panel-copy">
-              <p>Váš programovací agent získá trvalou paměť projektu, sdílené dovednosti a tým, kterému může předat kontroly a rešerše, zatímco pokračuje v práci.</p>
+              <p>Váš programovací agent získá trvalou paměť projektu, sdílené skills a tým, kterému předá review nebo rešerši. Mezitím může pokračovat v práci.</p>
               <ul>
                 <li>Připomeňte si, proč je kód navržen právě takto</li>
-                <li>Získejte kontrolu po každém commitu</li>
-                <li>Proměňte jednorázovou opravu v dovednost pro další relace</li>
+                <li>Po každém commitu dostanete review</li>
+                <li>Z jednorázové opravy udělejte skill pro každou další session</li>
               </ul>
               <p class="connects">Plugin pro <strong>Claude Code a Codex</strong>; ostatní CLI lze připojit přes HTTP.</p>
             </div>
@@ -501,12 +501,12 @@
                 <p class="t-out" style="--i:2">  nalezeny 3 poznámky, včetně důvodu vypršení lease</p>
                 <p class="t-cmd" style="--i:3">  úprava internal/scheduler/lease.go, testy procházejí</p>
                 <p class="t-cmd" style="--i:4">  delegate architectural-review</p>
-                <p class="t-out" style="--i:5">  zařazeno ve Vorniku, agent mezitím pokračuje v práci</p>
+                <p class="t-out" style="--i:5">  review čeká ve frontě Vorniku, agent mezitím programuje</p>
                 <p class="t-ok"  style="--i:6">  ok  kontrola dokončena, 0 nálezů</p>
                 <p class="t-cmd" style="--i:7">  remember &quot;příčina: rozdíl hodin při obnovení&quot;</p>
-                <p class="t-ok"  style="--i:8">  ok  uloženo pro příští relaci</p>
+                <p class="t-ok"  style="--i:8">  ok  uloženo pro příští session</p>
               </div>
-              <p class="sr-only">Příklad: agent v Claude Code načte dřívější poznámky k návrhu z paměti Vorniku, připraví opravu a předá kontrolu architektury Vorniku. Mezitím pokračuje v práci, obdrží kontrolu bez nálezů a uloží příčinu problému pro příští relaci.</p>
+              <p class="sr-only">Příklad: agent v Claude Code načte poznámky k návrhu z paměti Vorniku a připraví opravu. Review architektury předá Vorniku a mezitím pokračuje v práci. Obdrží review bez nálezů a uloží příčinu problému pro příští session.</p>
             </div>
           </div>
         </div>
@@ -521,12 +521,12 @@
           <p class="section-lede">Návod na agents.vornik.io je napsaný pro agenty. Operace vyžadující vyšší oprávnění schvalujete vy.</p>
           <ol class="steps">
             <li>
-              <h3>Vložte jeden pokyn</h3>
+              <h3>Vložte jeden prompt</h3>
               <p>Do Claude Code, Codexu nebo svého agenta Hermes.</p>
             </li>
             <li>
-              <h3>Nainstaluje se a ověří funkčnost</h3>
-              <p>Služba, databáze, klíč k vašemu modelu a první úkol, který musí úspěšně dokončit.</p>
+              <h3>Nainstaluje Vornik a ověří, že funguje</h3>
+              <p>Spustí službu i databázi, nastaví klíč k modelu a ověří dokončení prvního úkolu.</p>
             </li>
             <li>
               <h3>Připojí se k Vorniku</h3>
@@ -557,7 +557,7 @@
     <!-- ================= SHARED CORE ================= -->
     <section aria-labelledby="core-title">
       <div class="shell">
-        <h2 id="core-title">Společný základ pro oba způsoby</h2>
+        <h2 id="core-title">Stejný základ pro oba způsoby práce</h2>
         <p class="section-lede">Jeden server pod vaší kontrolou. Každý výsledek zůstane uložený.</p>
         <div class="core">
           <div>
@@ -573,12 +573,12 @@
             <p>Každý agent ve vlastním kontejneru, volitelně bez přístupu k síti.</p>
           </div>
           <div>
-            <h3>Paměť, která přetrvá</h3>
+            <h3>Trvalá paměť</h3>
             <p>Prohledávatelná paměť každého projektu, která navazuje na předchozí práci.</p>
           </div>
           <div>
             <h3>Důležité kroky schvalujete vy</h3>
-            <p>Schvalování jednotlivých kroků ze spárovaného telefonu.</p>
+            <p>Důležité kroky schválíte přímo ze spárovaného telefonu.</p>
           </div>
           <div>
             <h3>Práce pokračuje i po restartu</h3>
@@ -592,13 +592,13 @@
     <!-- Community and Enterprise are edition names, kept in all languages. -->
     <section aria-labelledby="editions-title">
       <div class="shell">
-        <h2 id="editions-title">Provoz zdarma, kód otevřený</h2>
+        <h2 id="editions-title">Provoz zdarma, otevřený kód</h2>
         <p class="section-lede">Community obsahuje celý základ systému. Žádná demoverze.</p>
         <div class="editions">
           <div class="edition">
             <h3>Community</h3>
             <span class="tag">AGPL-3.0, na GitHubu</span>
-            <p>Služba, agenti, paměť, pracovní postupy, webové rozhraní, CLI a pluginy.</p>
+            <p>Služba, agenti, paměť, workflow, webové rozhraní, CLI a pluginy.</p>
           </div>
           <div class="edition">
             <h3>Enterprise</h3>
@@ -612,7 +612,7 @@
     <!-- ================= FINAL CTA ================= -->
     <section class="final" aria-labelledby="final-title">
       <div class="shell">
-        <h2 id="final-title">Nainstalujte Vornik jedním pokynem</h2>
+        <h2 id="final-title">Nainstalujte Vornik jedním promptem</h2>
         <p class="section-lede">Během pár minut získáte funkční službu, dokončený první úkol a agenta s pamětí.</p>
         <div class="install" data-install>
           <div class="install-tabs" role="group" aria-label="Způsob instalace Vorniku">
@@ -624,20 +624,20 @@
               <p class="install-cmd" data-cmd>Nainstaluj mi Vornik. Postupuj podle návodu na <span class="url">https://agents.vornik.io</span></p>
               <button class="btn btn-primary install-copy" type="button" data-copy>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-                <span data-copy-label>Kopírovat pokyn</span>
+                <span data-copy-label>Kopírovat prompt</span>
               </button>
             </div>
-            <p class="install-note" data-note>Vložte jej do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu.</p>
+            <p class="install-note" data-note>Vložte prompt do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu.</p>
           </div>
         </div>
-        <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Zdarma a s otevřeným kódem. Linux a macOS. Bez účtu a registrace do cloudu.</p>
+        <p class="reassure"><span class="ok-dot" aria-hidden="true"></span>Zdarma a s otevřeným kódem. Linux a macOS. Bez účtu, bez registrace v cloudu.</p>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="shell foot-row">
-      <span>Týmy AI agentů pod vaší kontrolou. Otevřené jádro, AGPL-3.0.</span>
+      <span>Vlastní týmy AI agentů. Open core, AGPL-3.0.</span>
       <span class="foot-links">
         <a href="https://docs.vornik.io">Dokumentace</a>
         <a href="https://github.com/EaseIT-cz/vornik/blob/main/AGENTS.md">AGENTS.md</a>
@@ -674,8 +674,8 @@
       var MODES = {
         agent: {
           html: "Nainstaluj mi Vornik. Postupuj podle návodu na \u003cspan class=\"url\">https://agents.vornik.io\u003c/span>",
-          label: "Kopírovat pokyn",
-          note: "Vložte jej do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu."
+          label: "Kopírovat prompt",
+          note: "Vložte prompt do Claude Code, Codexu nebo svého agenta Hermes s přístupem k terminálu."
         },
         shell: {
           html: '<span class="prompt-sign">$ </span>curl -fsSL https://get.vornik.io | bash',
