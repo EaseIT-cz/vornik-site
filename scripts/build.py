@@ -1,13 +1,43 @@
 #!/usr/bin/env python3
 """Render static locale pages with Python's standard library only."""
 import argparse
+import html
+from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-TOKEN = re.compile(r'\{\{([\w.]+)(\|json)?\}\}')
+TOKEN = re.compile(r'\{\{([\w.]+)(?:\|(json|html))?\}\}')
 LANGUAGES = {'en': 'en_US', 'cs': 'cs_CZ'}
+
+
+def validate_html(source):
+    """Catch unbalanced markup before a catalog change reaches hosting."""
+    class BalancedHTML(HTMLParser):
+        void = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+                'link', 'meta', 'param', 'source', 'track', 'wbr'}
+
+        def __init__(self):
+            super().__init__()
+            self.stack = []
+
+        def handle_starttag(self, tag, attrs):
+            if tag not in self.void:
+                self.stack.append(tag)
+
+        def handle_startendtag(self, tag, attrs):
+            pass
+
+        def handle_endtag(self, tag):
+            if not self.stack or self.stack.pop() != tag:
+                raise ValueError(f'Unbalanced closing tag: {tag}')
+
+    parser = BalancedHTML()
+    parser.feed(source)
+    parser.close()
+    if parser.stack:
+        raise ValueError(f'Unclosed HTML tags: {parser.stack}')
 
 
 def render_pages():
@@ -31,13 +61,17 @@ def render_pages():
 
         def substitute(match):
             value = values[match[1]]
-            # Catalogs are reviewed source, and may contain inline HTML.
-            # JSON encoding prevents translated quotes breaking JavaScript.
-            return json.dumps(value, ensure_ascii=False).replace('<', '\\u003c') if match[2] else value
+            if match[2] == 'json':
+                return json.dumps(value, ensure_ascii=False).replace('<', '\\u003c')
+            if match[2] == 'html':
+                # Only explicitly marked, reviewed inline markup is emitted raw.
+                return value
+            return html.escape(value, quote=True)
 
         rendered = TOKEN.sub(substitute, template)
         if '{{' in rendered:
             raise ValueError(f'{lang}: unresolved template token')
+        validate_html(rendered)
         pages[ROOT / lang / 'index.html'] = rendered
         if lang == 'en':
             # English fallback for no-JS visitors; language.js selects a locale
